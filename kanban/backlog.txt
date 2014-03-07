@@ -1,1 +1,24 @@
-Do smth
+/* This is only the first basic version, only initial tasks are appointed */
+
+Initial Plan of tasks:
+
+1) Finish business plan - Zhanbolat
+
+2) Develop qr tags, and their functionality - Kamila
+
+3) Analyze available qr tags, and choose one open source qr tag reader - 
+
+4) Install OpenDive SDK and learn basic functionality and explain to other members - Erkanat
+
+5) Create several mock-ups and present to the team
+
+6) Develop Game scenario, possible rules and present to the team - Almas
+
+7) How to synchronize data between phone and OpenDive 
+
+8) User Interface development
+
+9) Find out is it possible to use only one phone with both OpenDive and qr reader or we have to use two phones
+
+10) Create Documentation - Zarina
+
