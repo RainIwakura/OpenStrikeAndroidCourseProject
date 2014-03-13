@@ -1,9 +1,9 @@
-1) Finish business plan - Zhanbolat (week)
+1) Finish business plan - Zhanbolat (Sunday, 15 March)
 
-2) Develop qr tags, and their functionality - Kamila (week)
+2) Develop qr tags, and their functionality - Kamila (Sunday, 15 March)
 
-4) Install OpenDive SDK and learn basic functionality and explain to other members - Yerkanat (week)
+4) Install OpenDive SDK and learn basic functionality and explain to other members - Yerkanat, Zarina (Sunday, 15 March)
 
-6) Develop Game scenario, possible rules and present to the team - Almas (week)
+6) Develop Game scenario, possible rules and present to the team - Almas (Sunday, 15 March)
 
-10) Create Documentation - Zarina (week)
+10) Create Class Diagram - Zarina, Yerkanat (Sunday, 15 March)
