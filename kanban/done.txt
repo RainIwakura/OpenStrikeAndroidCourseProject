@@ -1,0 +1,4 @@
+1) Develop qr tags, and their functionality - Kamila (Sunday, 16 March)
+2) Install OpenDive SDK and learn basic functionality and explain to other members - Yerkanat, Zarina (Sunday, 16 March)
+3) Develop Game scenario, possible rules and present to the team - Almas (Sunday, 16 March)
+4) Class Diagram - Zarina (16 March)

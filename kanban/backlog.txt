@@ -22,3 +22,9 @@ Initial Plan of tasks:
 
 10) Create Class Diagram - Zarina, Yerkanat (2)
 
+11) Create prototype with augmented reality 
+
+12) Create prototype with qr reader
+
+13) Research the problem of using Unity OpenDive
+
