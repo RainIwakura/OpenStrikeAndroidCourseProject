@@ -28,3 +28,5 @@ Initial Plan of tasks:
 
 13) Research the problem of using Unity OpenDive
 
+14) Explore posibility of using OpenDive SDK, Vuforia AR library and Unity3D
+

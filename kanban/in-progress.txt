@@ -1,6 +1,6 @@
 1) Finish market research part of business plan - Zhanbolat (21 March)
 
-13) Unity OpenDive - Kamila (21 March)
+14) Explore posibility of using OpenDive, Vuforia AR library and Unity3D (24 March)
 
 11) Qr reader prototype - Yerkanat (Sunday, 21 March)
 
