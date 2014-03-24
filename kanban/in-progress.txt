@@ -1,9 +1,11 @@
-1) Finish market research part of business plan - Zhanbolat (21 March)
+1) Design of the app part in business plan - Zhanbolat (27 March)
 
-14) Explore posibility of using OpenDive, Vuforia AR library and Unity3D (24 March)
+15) Augmenter reality part - Zarina, Kamila (24 March)
 
 11) Qr reader prototype - Yerkanat (Sunday, 21 March)
 
-7) How to synchronize data between phone and OpenDive - Almas (21 March)
+16) Android version of OpenDive - Yerkanat, Zhanbolat (27 March)
 
 11) Create prototype with augmented reality - Zarina, Kamila(24 March)
+
+17) Wifi p2p part - Almas (27 March)
