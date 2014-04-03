@@ -1,0 +1,12 @@
+Task: Develope Assets (markers - qrcodes and  3D objects)
+	Types of Assets:
+		1. temporary: health, light, damage (weapon), time (counter), mirrow (reflect attack), recover the team members
+		2. constant: damage
+		3. blood ???
+		4. friends or enemies (markers)
+		5. Random object 
+
+Author: Team
+Owner: Kamila
+Deadline: April, 10
+
