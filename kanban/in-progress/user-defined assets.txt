@@ -1,4 +1,4 @@
 Task: Determine the way to use user-defined assets and markers
 Author: Team
-Owner: Zarina
+Owner: Kamila and Zarina
 Deadline: April, 10
