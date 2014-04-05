@@ -1,0 +1,4 @@
+Task: Find a way to detect one object per marker
+Author: Kamila
+Owner: Kamila
+Deadline: April, 10
