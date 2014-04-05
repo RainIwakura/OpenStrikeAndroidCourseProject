@@ -1,0 +1,7 @@
+How to use user defined assets:
+1. Change name of marker in xml file (for example in TrackingData_MarkerlessFast.xml)
+2. Export 3D object as .md2, .obj, .fbx
+3. Add file(.md2, .obj, .fbx) with texture image to assets folder
+4. Modify loadContents() method 
+modelPath = AssetsManager.getAssetPath(getApplicationContext(), "TutorialContentTypes/Assets/health/health.md2"); 
+where health/health.md2 - path to 3D model 
