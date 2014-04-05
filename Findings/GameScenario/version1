@@ -1,0 +1,24 @@
+OpenStrike
+
+Rules
+
+There are two teams in the game. The purpose of the game is to destroy enemy's home base. 
+In the beginning of the game playing room is covered with QR-codes, 
+each team selects them to build one home base and several fortifications. In addition each player
+is identified with QR-code.
+There is one player (captain) who sets the base in the beginning. Team players contribute 
+to building base using point gained during the game.
+
+There are two ways to get points: 
+	1. Kill/Damage enemy, by scanning his/her QR-code.
+	2. Damage enemies' base.
+
+To win the game team should destroy the enemy's base and kill their captain.
+At the beginning of the game one player is transformed to Zombie. This Zombie plays against all
+the players. He can infect anybody and after 1 minute infected player becomes Zombie too. Zombie 
+has  an advantage scanning QR-code to infect humans.
+
+Time limit of the game is 10 minutes.
+
+
+
