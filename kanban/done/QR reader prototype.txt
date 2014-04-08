@@ -1,0 +1,4 @@
+Task: Qr reader prototype
+Author: Team
+Owner: Yerkanat
+Deadline:  21 March

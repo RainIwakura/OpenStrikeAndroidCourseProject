@@ -2,8 +2,6 @@
 
 15) Augmenter reality part - Zarina, Kamila (24 March)
 
-11) Qr reader prototype - Yerkanat (Sunday, 21 March)
-
 16) Android version of OpenDive - Yerkanat, Zhanbolat (27 March)
 
 11) Create prototype with augmented reality - Zarina, Kamila(24 March)
