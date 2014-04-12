@@ -4,7 +4,7 @@ Initial Plan of tasks:
 
 1) Finish business plan - Zhanbolat (3)
 
-4) Install OpenDive SDK and learn basic functionality and explain to other members - Yerkanat, Zarina (1)
+
 
 5) Create several mock-ups and present to the team
 
