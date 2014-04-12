@@ -1,0 +1,4 @@
+Task: Android version of OpenDive
+Author: Team
+Owner: Yerkanat, Zhanbolat
+Deadline: April 15
