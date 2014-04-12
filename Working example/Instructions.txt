@@ -1,6 +1,0 @@
-1. Import metioSDK liabrary into eclipse (Findings\Library)
-2. Import project
-3. In project properties under Android add metaioSDK to the project
-4. Compile
-5. Press "ID marker" button
-6. Use first two marker from the "IDMarkers80mm.pdf" document for testing
