@@ -1,0 +1,5 @@
+Task: Fix problems with metaio SDK
+Author: Team
+Owner: Kamila and Zarina
+Time: Till Sunday, April 13
+Results: code in zip folder AssetsCorrectedVersion
