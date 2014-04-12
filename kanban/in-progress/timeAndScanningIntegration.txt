@@ -1,0 +1,4 @@
+Task: Integrate timer and picture scanning
+Author: Team
+Owner: Kamila and Zarina
+Time: Sunday, April 13

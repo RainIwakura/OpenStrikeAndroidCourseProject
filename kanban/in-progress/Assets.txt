@@ -8,5 +8,5 @@ Task: Develope Assets (markers - qrcodes and  3D objects)
 
 Author: Team
 Owner: Kamila
-Deadline: April, 10
+Deadline: April, 15
 
