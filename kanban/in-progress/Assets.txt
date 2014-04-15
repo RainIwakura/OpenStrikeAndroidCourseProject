@@ -1,6 +1,6 @@
 Task: Develope Assets (markers and  3D objects)
 	Types of Assets:
-		1. temporary: light, damage (weapon), time (counter), mirrow (reflect attack), recover the team members
+		1. temporary: light, time (counter), mirrow (reflect attack), recover the team members
 		2. constant: damage
 		3. friends or enemies (markers)
 		4. Random object 

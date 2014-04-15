@@ -1,0 +1,9 @@
+Task: Develope Assets (markers and  3D objects)
+	1. Goal - goblet (3D)
+	2. Protector - shield (2D)
+	3. Attacker - 
+		a) sword  (2D)
+		b) axe (3D)
+Author: Team
+Owner: Kamila
+Deadline: April, 15
