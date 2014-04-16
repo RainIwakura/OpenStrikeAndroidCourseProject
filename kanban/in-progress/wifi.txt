@@ -1,0 +1,1 @@
+Develop simple multithreaded server, client model, add QR code reading of IP addr of server for automatic connection, later add encryption algorithm
