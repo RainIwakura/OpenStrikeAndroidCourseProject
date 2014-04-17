@@ -1,31 +1,30 @@
 package com.example.wifiserver;
 
-import java.net.InetAddress;
 import java.net.Socket;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
-public class ClientActivity extends ActionBarActivity {
+public class ClientActivity extends Activity {
 	Socket socket;
-	@Override
+	TextView ipView;
+	private boolean showIpButtonStatus  = false;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_client);
-			
-		String host = this.getIpAddr();
-		TextView showIp = (TextView) findViewById (R.id.showIp);
-
-		showIp.setText("IP " + host);
 		
+		ipView = (TextView) findViewById (R.id.showIp);
+		ipView.setVisibility(View.INVISIBLE);
 	}
 
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -33,7 +32,6 @@ public class ClientActivity extends ActionBarActivity {
 		return true;
 	}
 
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
@@ -45,6 +43,17 @@ public class ClientActivity extends ActionBarActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void showIp (View v) {
+		if (!this.showIpButtonStatus) {
+			String host = this.getIpAddr();
+			ipView.setVisibility(View.VISIBLE);
+			ipView.setText("IP " + host);
+			this.showIpButtonStatus = true;
+		} else {
+			ipView.setVisibility(View.INVISIBLE);
+			this.showIpButtonStatus = false;
+		}
+	}
 	
 	public String getIpAddr() {
 		   WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
@@ -60,5 +69,14 @@ public class ClientActivity extends ActionBarActivity {
 
 		   return ipString;
 		}
-
+	
+	public void onPause () {
+		super.onPause();
+	}
+	
+	public void goBack(View v) {
+		Intent intent = new Intent(this, MainActivity.class);
+		startActivity(intent);
+		finish();
+	}
 }
