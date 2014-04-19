@@ -1,34 +1,31 @@
 package com.example.wifiserver;
 
-import java.net.Socket;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
+import android.widget.EditText;
 
 public class ClientActivity extends Activity {
-	Socket socket;
-	TextView ipView;
-	private boolean showIpButtonStatus  = false;
+	private Handler handle;
+	private int serverPort; 
+	private String serverIP;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_client);
-		
-		ipView = (TextView) findViewById (R.id.showIp);
-		ipView.setVisibility(View.INVISIBLE);
+		setContentView(R.layout.activity_cln);
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.client, menu);
+		//	getMenuInflater().inflate(R.menu.server, menu);
 		return true;
 	}
 
@@ -43,40 +40,24 @@ public class ClientActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void showIp (View v) {
-		if (!this.showIpButtonStatus) {
-			String host = this.getIpAddr();
-			ipView.setVisibility(View.VISIBLE);
-			ipView.setText("IP " + host);
-			this.showIpButtonStatus = true;
-		} else {
-			ipView.setVisibility(View.INVISIBLE);
-			this.showIpButtonStatus = false;
-		}
-	}
-	
-	public String getIpAddr() {
-		   WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
-		   WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		   int ip = wifiInfo.getIpAddress();
-
-		   String ipString = String.format(
-		   "%d.%d.%d.%d",
-		   (ip & 0xff),
-		   (ip >> 8 & 0xff),
-		   (ip >> 16 & 0xff),
-		   (ip >> 24 & 0xff));
-
-		   return ipString;
-		}
-	
-	public void onPause () {
-		super.onPause();
-	}
-	
-	public void goBack(View v) {
+	public void goBackClient(View v) {
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
 		finish();
+	}
+
+	public void saveIPandPort (View v) {
+		EditText IP = (EditText) findViewById (R.id.getIpField);
+		EditText port = (EditText) findViewById (R.id.enter_port);
+		this.serverIP = IP.getText().toString();
+		this.serverPort = Integer.parseInt(port.getText().toString());
+	}
+	
+	private class ClientThread extends Thread {
+			
+		@Override
+		public void run () {
+			
+		}
 	}
 }

@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public void createServerActivity (View view){
-		Intent intent = new Intent(this, ServerActivity.class);
+		Intent intent = new Intent(this, ClientActivity.class);
 /*		EditText editText = (EditText)findViewById(R.id.MainEdit);
 		String email = editText.getText().toString();
 		intent.putExtra(EMAIL, email);*/
@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
 		finish();
 	}
 	public void createClientActivity (View view){
-		Intent intent = new Intent(this, ClientActivity.class);
+		Intent intent = new Intent(this, ServerActivity.class);
 /*		EditText editText = (EditText)findViewById(R.id.MainEdit);
 		String email = editText.getText().toString();
 		intent.putExtra(EMAIL, email);*/
