@@ -1,4 +1,0 @@
-Task: Create code for increasing or decreasing scanning time
-Author: Team
-Owner: Zarina
-Deadline: April, 10

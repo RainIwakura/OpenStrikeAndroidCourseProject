@@ -1,0 +1,3 @@
+Reading through various responses, I (Almas) concluded that Bluetooth is ineffiecient for our purposes. I also suggested using wifi p2p, 
+which turned out to be as much hard as bluetooth is. By suggesting of Prof Ulrich, I decided to switch on using simple wifi connection, and
+server-client model (details can be found in in-progress). Wifi P2P still possible given time.
