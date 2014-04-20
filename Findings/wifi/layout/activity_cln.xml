@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.wifiserver.ServerActivity"
+    tools:context="com.example.wifiserver.ClientActivity"
     tools:ignore="MergeRootFrame" >
 
     <EditText
@@ -22,31 +22,38 @@
         android:layout_height="wrap_content"
         android:text="Enter IP" />
 
+    <EditText
+        android:id="@+id/msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/msgName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="message"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <Button
         android:id="@+id/sendIpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send Ip" />
-
-    <EditText
-        android:id="@+id/ip_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number" />
+        android:text="Send Ip"
+        android:onClick="saveIPandPort" />
 
     <Button
-        android:id="@+id/push_port"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Push port" 
-        android:onClick="savePort"/>
-
-    <Button
-        android:id="@+id/button1"
+        android:id="@+id/button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Back" 
         android:onClick="goBackClient"/>
+
+    <Button
+        android:id="@+id/sendMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send message"
+        android:onClick="writeToServer" />
 
 </LinearLayout>
