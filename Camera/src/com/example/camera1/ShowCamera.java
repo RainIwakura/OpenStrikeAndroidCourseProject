@@ -44,11 +44,12 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
       try   {
          theCamera.setPreviewDisplay(holder);
          theCamera.setPreviewCallback( new PreviewCallback() {
-
              public void onPreviewFrame( byte[] data, Camera camera ) {
                  if ( camera != null )
                  {
                      Camera.Parameters parameters = camera.getParameters();
+                     System.out.println("ASDASD "+parameters.getPictureSize().width+" "+parameters.getPictureSize().height);
+                     System.out.println("ASDASD "+parameters.getPreviewSize().width+" "+parameters.getPreviewSize().height);
                      int imageFormat = parameters.getPreviewFormat();
                      Bitmap bitmap = null;
                      
@@ -76,32 +77,32 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
                      {
                     	 bitmap.recycle();
                          bitmap = null;
-                    	 FileOutputStream fileStream;
-                         try {
-                             String filePath = "/sdcard/pictures/image_preview.jpg";
-                             File imageFile = new File( filePath );
-                             fileStream = new FileOutputStream( imageFile );
-                             bitmapLeft.compress(Bitmap.CompressFormat.JPEG, 80, fileStream);
-                             fileStream.flush();
-                             fileStream.close();
-                         } catch (FileNotFoundException e) {
-                             Log.e( TAG, e.toString() );
-                         } catch (IOException e) {
-                             Log.e(TAG, e.toString() );
-                         }
-                    	 Log.i(TAG, "cloning bitmap");
+//                    	 FileOutputStream fileStream;
+//                         try {
+//                             String filePath = "/sdcard/pictures/image_preview.jpg";
+//                             File imageFile = new File( filePath );
+//                             fileStream = new FileOutputStream( imageFile );
+//                             bitmapLeft.compress(Bitmap.CompressFormat.JPEG, 80, fileStream);
+//                             fileStream.flush();
+//                             fileStream.close();
+//                         } catch (FileNotFoundException e) {
+//                             Log.e( TAG, e.toString() );
+//                         } catch (IOException e) {
+//                             Log.e(TAG, e.toString() );
+//                         }
+                    	 //Log.i(TAG, "cloning bitmap");
                     	 showLeft.setImageBitmap(bitmapLeft);
                     	 showRight.setImageBitmap(bitmapRight);
                      }
                      if ( bitmap == null )
                      {
-                    	 Log.i(TAG, "bitmap is null");
+//                    	 Log.i(TAG, "bitmap is null");
                      }
-                     Log.e(TAG, "onPreviewFrame" );
+//                     Log.e(TAG, "onPreviewFrame" );
                  }
                  else
                  {
-                     Log.e(TAG, "Camera is null" );
+//                     Log.e(TAG, "Camera is null" );
                  }
              }
          });
