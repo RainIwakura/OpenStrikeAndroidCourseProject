@@ -3,6 +3,7 @@ package com.example.camera1;
 import android.app.Activity;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,8 +118,9 @@ public class MainActivity extends Activity {
 		
 		System.out.println("WHAHAHA  "+pictureSize.width + " " + pictureSize.height);
 		parameters.setPictureFormat(ImageFormat.JPEG);
+		parameters.setWhiteBalance(Parameters.WHITE_BALANCE_AUTO);
+		
 		cameraObject.setParameters(parameters);
-
 		ImageView preview_right = (ImageView) findViewById(R.id.camera_preview_right);
 		ImageView preview_left = (ImageView) findViewById(R.id.camera_preview_left);
 		preview_right.setImageResource(R.drawable.ic_launcher);

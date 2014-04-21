@@ -1,9 +1,6 @@
 package com.example.camera1;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.content.Context;
@@ -14,7 +11,6 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageView;
@@ -48,8 +44,6 @@ public class ShowCamera extends SurfaceView implements SurfaceHolder.Callback {
                  if ( camera != null )
                  {
                      Camera.Parameters parameters = camera.getParameters();
-                     System.out.println("ASDASD "+parameters.getPictureSize().width+" "+parameters.getPictureSize().height);
-                     System.out.println("ASDASD "+parameters.getPreviewSize().width+" "+parameters.getPreviewSize().height);
                      int imageFormat = parameters.getPreviewFormat();
                      Bitmap bitmap = null;
                      
