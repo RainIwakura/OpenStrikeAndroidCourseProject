@@ -24,7 +24,7 @@ public class TutorialTrackingSamples extends ARViewActivity {
 	// private IGeometry mMetaioMan;
 	private IGeometry mImagePlane;
 	private IGeometry mHealth;
-
+	private IGeometry mDead;
 	String trackingConfigFile;
 
 	// timer
@@ -34,6 +34,8 @@ public class TutorialTrackingSamples extends ARViewActivity {
 	private TextView timerValue;
 	private long startTime = 0L;
 	private Handler customHandler = new Handler();
+	private Player player = new Player();
+
 	long timeInMilliseconds = 0L;
 	// long timeSwapBuff = 0L;
 	// long updatedTime = 0L;
@@ -108,19 +110,36 @@ public class TutorialTrackingSamples extends ARViewActivity {
 							if (timeInMilliseconds == 0) {
 
 								startTimer();
-							}						
+							}
 
-							if ((timeInMilliseconds>3000L && timeInMilliseconds<6000L)|| timeInMilliseconds >8000L){
-									mHealth.setCoordinateSystemID(poses.get(i)
-										.getCoordinateSystemID());	
-									mImagePlane.setVisible(false);
-									mHealth.setVisible(true);
-							}							
-							else if (timeInMilliseconds>6000L && timeInMilliseconds<8000L){
+							if ((timeInMilliseconds > 3000L && timeInMilliseconds < 6000L)
+									|| timeInMilliseconds > 8000L) {
+//								mHealth.setCoordinateSystemID(poses.get(i)
+//										.getCoordinateSystemID());
+//								mImagePlane.setVisible(false);
+//								mHealth.setVisible(true);
 								mImagePlane.setCoordinateSystemID(poses.get(i)
-										.getCoordinateSystemID());	
-								mHealth.setVisible(false);
-								mImagePlane.setVisible(true);
+										.getCoordinateSystemID());
+								if (timeInMilliseconds > 4000L && timeInMilliseconds < 6000L) {
+									player.setHealth(player.getHealth()-20);
+									timeInMilliseconds = 0;
+									mImagePlane.setVisible(false);
+								} else
+									mImagePlane.setVisible(true);
+								
+								if (!player.isAlive()) {
+									mImagePlane.setVisible(false);
+									mDead.setCoordinateSystemID(poses.get(i)
+											.getCoordinateSystemID());
+								} else {
+									
+								}
+							} else if (timeInMilliseconds > 6000L
+									&& timeInMilliseconds < 8000L) {
+//								mImagePlane.setCoordinateSystemID(poses.get(i)
+//										.getCoordinateSystemID());
+//								mHealth.setVisible(false);
+//								mImagePlane.setVisible(true);
 							}
 						}
 					} else {
@@ -246,7 +265,21 @@ public class TutorialTrackingSamples extends ARViewActivity {
 							+ imagePath);
 				}
 			}
+			
+			final String deadPath = AssetsManager.getAssetPath(
+					getApplicationContext(),
+					"TutorialTrackingSamples/Assets/health/dead.jpg");
 
+			if (deadPath != null) {
+				mDead = metaioSDK.createGeometryFromImage(deadPath);
+				if (mDead != null) {
+					mDead.setScale(2.0f);
+					MetaioDebug.log("Loaded geometry " + deadPath);
+				} else {
+					MetaioDebug.log(Log.ERROR, "Error loading geometry: "
+							+ deadPath);
+				}
+			}
 			final String modelPath = AssetsManager.getAssetPath(
 					getApplicationContext(),
 					"TutorialTrackingSamples/Assets/health/health.md2");

@@ -1,3 +1,4 @@
+
 package com.metaio.Example;
 
 public class Player {
@@ -27,5 +28,5 @@ public class Player {
 	public boolean isAlive() {
 		return (health>0);
 	}
-	
+
 }

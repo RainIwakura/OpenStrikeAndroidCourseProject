@@ -24,17 +24,18 @@ public class TutorialTrackingSamples extends ARViewActivity {
 	private IGeometry mImagePlane;
 	private IGeometry mHealth;
 	private IGeometry mDead;
-	
+
 	String trackingConfigFile;
 
 	// timer
 	private Button startButton;
-	//private Button pauseButton;
+	// private Button pauseButton;
 	private Button stopButton;
 	private TextView timerValue;
 	private long startTime = 0L;
 	private Handler customHandler = new Handler();
 	long timeInMilliseconds = 0L;
+	private Player player = new Player();
 	// long timeSwapBuff = 0L;
 	// long updatedTime = 0L;
 
@@ -46,11 +47,11 @@ public class TutorialTrackingSamples extends ARViewActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		System.out.println("SHIT "+metaioSDK.getCameraParameters());
-		System.out.println("SHIT "+metaioSDK.getCamera());
-		
+		System.out.println("SHIT " + metaioSDK.getCameraParameters());
+		System.out.println("SHIT " + metaioSDK.getCamera());
+
 		mCallbackHandler = new MetaioSDKCallbackHandler();
-		
+
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class TutorialTrackingSamples extends ARViewActivity {
 	@Override
 	public void onDrawFrame() {
 		super.onDrawFrame();
-		
+
 		if (metaioSDK != null) {
 			// get all detected poses/targets
 			TrackingValuesVector poses = metaioSDK.getTrackingValues();
@@ -80,43 +81,43 @@ public class TutorialTrackingSamples extends ARViewActivity {
 				// Detect which picture is detected and assign appropriate asset
 				for (int i = 0; i < poses.size(); i++) {
 					if (poses.get(i).isTrackingState()) {
-
 						System.out.println("IS TRACKING " + i);
-
 						if (poses.get(i).getCoordinateSystemID() == 1) {
 							// start timer
 							if (timeInMilliseconds == 0) {
-
 								startTimer();
 							}
 							mHealth.setCoordinateSystemID(poses.get(i)
 									.getCoordinateSystemID());
-
+							player.setHealth(player.getHealth()+10);
 						} else if (poses.get(i).getCoordinateSystemID() == 2) {
-
 							// start timer
 							if (timeInMilliseconds == 0) {
-
 								startTimer();
 							}
-
-//							mImagePlane.setCoordinateSystemID(poses.get(i)
-//									.getCoordinateSystemID());
+							mImagePlane.setCoordinateSystemID(poses.get(i)
+									.getCoordinateSystemID());
+							player.setHealth(player.getHealth()-20);
+							if (!player.isAlive()) {
+								mImagePlane.setVisible(false);
+								mDead.setCoordinateSystemID(poses.get(i)
+										.getCoordinateSystemID());
+							}
+						} else if (poses.get(i).getCoordinateSystemID() == 3) {
+							// start timer
+							if (timeInMilliseconds == 0) {
+								startTimer();
+							}
 							mDead.setCoordinateSystemID(poses.get(i)
 									.getCoordinateSystemID());
 						}
-
 					} else {
 						System.out.println("NOT TRACKING " + i);
 						System.out.println(poses.get(i).isTrackingState());
 						stopTimer();
-
 					}
 				}
-				// ////////////////////////////////////
-
 			}
-
 		}
 	}
 
@@ -153,10 +154,8 @@ public class TutorialTrackingSamples extends ARViewActivity {
 				.getAssetPath(getApplicationContext(),
 						"TutorialTrackingSamples/Assets/TrackingData_MarkerlessFast.xml");
 		MetaioDebug.log("Tracking Config path = " + trackingConfigFile);
-
 		boolean result = metaioSDK.setTrackingConfiguration(trackingConfigFile);
 		MetaioDebug.log("Markerless tracking data loaded: " + result);
-
 	}
 
 	public void startTimer() {
@@ -178,8 +177,8 @@ public class TutorialTrackingSamples extends ARViewActivity {
 
 		timeInMilliseconds = 0;
 		customHandler.removeCallbacks(updateTimerThread);
-//		timerValue.setText("" + 00 + ":" + String.format("%02d", 00) + ":"
-//				+ String.format("%03d", 00));
+		// timerValue.setText("" + 00 + ":" + String.format("%02d", 00) + ":"
+		// + String.format("%03d", 00));
 	}
 
 	@Override
@@ -200,7 +199,7 @@ public class TutorialTrackingSamples extends ARViewActivity {
 			if (imagePath != null) {
 				mImagePlane = metaioSDK.createGeometryFromImage(imagePath);
 				if (mImagePlane != null) {
-					mImagePlane.setScale(3.0f);
+					mImagePlane.setScale(0.5f);
 					MetaioDebug.log("Loaded geometry " + imagePath);
 				} else {
 					MetaioDebug.log(Log.ERROR, "Error loading geometry: "
@@ -211,10 +210,11 @@ public class TutorialTrackingSamples extends ARViewActivity {
 			final String deadPath = AssetsManager.getAssetPath(
 					getApplicationContext(),
 					"TutorialTrackingSamples/Assets/health/dead.jpg");
+			
 			if (deadPath != null) {
 				mDead = metaioSDK.createGeometryFromImage(deadPath);
 				if (mDead != null) {
-					mDead.setScale(3.0f);
+					mDead.setScale(2.0f);
 					MetaioDebug.log("Loaded geometry " + deadPath);
 				} else {
 					MetaioDebug.log(Log.ERROR, "Error loading geometry: "
@@ -304,20 +304,16 @@ public class TutorialTrackingSamples extends ARViewActivity {
 			});
 		}
 	}
-	
+
 	@Override
-	protected void startCamera()
-	{
+	protected void startCamera() {
 		// Start the first camera found by default
 		final CameraVector cameras = metaioSDK.getCameraList();
-		if (cameras.size() > 0)
-		{
+		if (cameras.size() > 0) {
 			com.metaio.sdk.jni.Camera camera = cameras.get(0);
-			//cameras.get(0).
+			// cameras.get(0).
 			metaioSDK.startCamera(camera);
-		}
-		else
-		{
+		} else {
 			MetaioDebug.log(Log.WARN, "No camera found on the device!");
 		}
 	}

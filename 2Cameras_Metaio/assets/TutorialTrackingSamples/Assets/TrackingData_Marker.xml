@@ -245,7 +245,7 @@
 			</Fuser>
 			<SensorSource trigger="1">
 				<SensorID>Markertracking1</SensorID>
-				<SensorCosID>Marker1</SensorCosID>
+				<SensorCosID>Marker3</SensorCosID>
 				<HandEyeCalibration>
 					<TranslationOffset>
 						<x>0</x>
