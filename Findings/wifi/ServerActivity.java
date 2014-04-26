@@ -12,6 +12,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,39 +25,37 @@ public class ServerActivity extends Activity {
 	private boolean showIpButtonStatus  = false;
 	private int port; 
 	private Handler handle;
-	
+
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_srv);
-		
 		ipView = (TextView) findViewById (R.id.showIp);
 		ipView.setVisibility(View.VISIBLE);
 		ipView.setText("IP " + getIpAddr());
-	//	ipView.setVisibility(View.INVISIBLE);
-		
-
-		handle = new Handler() {
-			 public void handleMessage(Message msg) {
-				    Bundle bundle = msg.getData();
-				    Toast.makeText(getApplicationContext(),bundle.getString("msg"),Toast.LENGTH_SHORT).show();
-
-		      }
-			
-		};
-		
+		System.out.println("new server");
 		Runnable startServer = new Runnable  () {
 			public void run () {
 				Toast toast = new Toast(getApplicationContext());
                 toast.makeText(getApplicationContext(),"Yes", Toast.LENGTH_LONG).show();
-
+                
 			}
 		};
+		final TextView status = (TextView) findViewById(R.id.status);
+		this.handle = new Handler() {
+			 public void handleMessage(Message msg) {
+				    Bundle bundle = msg.getData();
+				    status.setText(bundle.getString("msg"));
+				    System.out.println("working");
+					System.out.println("in handler"+ status.hashCode());
+		     }
+			
+			};
+			
+		System.out.println(status.hashCode());
 		int port = 5555;
 		MultiplexServer server = new MultiplexServer(getIpAddr(), port, handle, startServer);
 		pool.execute(server);
-		
-		
 	}
 	
 	
@@ -110,12 +109,29 @@ public class ServerActivity extends Activity {
 		}
 	
 	public void onPause () {
+	    handle.removeCallbacksAndMessages(null);
 		super.onPause();
 	}
 	
+	public void onResume () {
+		super.onResume();
+	}
+	
+	public void onRestart() {
+		super.onRestart();
+	}
+	
+	public void onStop() {
+		super.onStop();
+	}
+	
+	public void onDestroy() {
+		super.onDestroy();
+	}
 	public void goBack(View v) {
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
+		handle.removeCallbacks(null);
 		finish();
 	}
 }

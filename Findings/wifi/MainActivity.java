@@ -44,21 +44,12 @@ public class MainActivity extends Activity {
 	
 	public void createServerActivity (View view){
 		Intent intent = new Intent(this, ClientActivity.class);
-/*		EditText editText = (EditText)findViewById(R.id.MainEdit);
-		String email = editText.getText().toString();
-		intent.putExtra(EMAIL, email);*/
-		
-	//	intent.putExtra("HANDLE", ha);
 		startActivity(intent);
+		System.out.println("restarting server");
 		finish();
 	}
 	public void createClientActivity (View view){
 		Intent intent = new Intent(this, ServerActivity.class);
-/*		EditText editText = (EditText)findViewById(R.id.MainEdit);
-		String email = editText.getText().toString();
-		intent.putExtra(EMAIL, email);*/
-		
-	//	intent.putExtra("HANDLE", ha);
 		startActivity(intent);
 		finish();
 	}

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -13,8 +12,8 @@ import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.UUID;
 
-import android.net.wifi.WifiInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,8 +28,10 @@ public class MultiplexServer extends Thread {
 	private int numOfRequests = 0;
 	private Handler handle;
 	private Runnable message;
-	private  String wifiInfo;
-	public MultiplexServer(String wifiInfo, Integer port, Handler handle, Runnable msg) {
+	private String wifiInfo;
+
+	public MultiplexServer(String wifiInfo, Integer port, Handler handle,
+			Runnable msg) {
 		// process the command-line args
 
 		this.port = port;
@@ -39,8 +40,6 @@ public class MultiplexServer extends Thread {
 		this.wifiInfo = wifiInfo;
 	}
 
-
-	
 	/*
 	 * Handle all the clients
 	 */
@@ -56,17 +55,17 @@ public class MultiplexServer extends Thread {
 			selector = sp.openSelector();
 			serverSock = sp.openServerSocketChannel();
 			serverSock.configureBlocking(false);
-			serverSock.socket().bind(new InetSocketAddress(InetAddress.getByName(wifiInfo),port));
+			serverSock.socket()
+					.bind(new InetSocketAddress(
+							InetAddress.getByName(wifiInfo), port));
 			serverSock.register(selector, SelectionKey.OP_ACCEPT);
 		} catch (IOException io) {
 			io.printStackTrace();
-		} 
+		}
 
-	    int bytesRead;
+		int bytesRead;
 		boolean closeConnection = false;
-		Message msg = new Message();
-		Bundle b = new Bundle();
-			
+
 		for (;;) {
 			// Wait for something to happen on one of our sockets // If nothing
 			// is happening then we can feel free to block
@@ -75,15 +74,20 @@ public class MultiplexServer extends Thread {
 			} catch (IOException ioe) {
 				System.out.println("IOExcetion: line 126");
 				ioe.printStackTrace();
-			} // get the keys that have had some action
-				// and loop through them all
-			System.out.println("OK. Something happened.");
+			}
+			// get the keys that have had some action
+			// and loop through them all
+			handle.sendMessage(createMsg("OK. Something happened."));
 			readyKeys = selector.selectedKeys();
 
 			Iterator<SelectionKey> it = readyKeys.iterator();
 			System.out.println("There are " + readyKeys.size()
 					+ " sockets ready to be checked.");
-			
+			String strMsg = "There are " + readyKeys.size()
+					+ " sockets ready to be checked.";
+
+			handle.sendMessage(createMsg(strMsg));
+
 			// Wait so we can follow the output
 			try {
 				Thread.sleep(1000);
@@ -91,35 +95,39 @@ public class MultiplexServer extends Thread {
 			} catch (InterruptedException ie) {
 				System.out.println("Interrupted exception: line 138");
 			}
-			while (it.hasNext()) { 
-				// Two possibilities: it's a new client	 knocking 
+			while (it.hasNext()) {
+				// Two possibilities: it's a new client knocking
 				// or it's an existing client with a request
 				SelectionKey key = (SelectionKey) it.next();
 				if (key.isAcceptable()) {
 
-					System.out.println("Action on the listen socket."); 
-					
-					ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
+					System.out.println("Action on the listen socket.");
+
+					ServerSocketChannel ssc = (ServerSocketChannel) key
+							.channel();
 					System.out.println("SOCKET " + ssc);
-					
+
 					// You won't block here, because we are guaranteed it is
 					// ready
 					try {
 						if (ssc == null) {
 							System.out.println("null 1");
-							
+
 						}
 						ServerSocket sock = ssc.socket();
 						System.out.println(sock.getLocalPort());
 						System.out.println(sock.getInetAddress().toString());
-			
+
 						SocketChannel sc = ssc.accept();
 						if (sc == null) {
 							System.out.println("null 2");
 						}
-						System.out.println("Accepted a new client.");
+
+						handle.sendMessage(createMsg("Accepted a new client."));
+
 						ClientInfo info = new ClientInfo(
-						System.currentTimeMillis(), 0l, numOfRequests);
+								System.currentTimeMillis(), 0l, numOfRequests,
+								null);
 
 						// Now add the new client sock to set of what is being
 						// listened to
@@ -133,13 +141,13 @@ public class MultiplexServer extends Thread {
 					}
 
 					System.out.println("Registered a new client.");
-				} else if ((key.readyOps() & SelectionKey.OP_READ) == SelectionKey.OP_READ) {
-					System.out.println("Action on a client socket."); // So this
-																		// socket
-					// is a client socket
+
+				} else if (key.isReadable()) {
+					System.out.println("Action on a client socket.");
+					// So this socket is a client socket
 					SocketChannel sc = (SocketChannel) key.channel();
-					System.out.println("SOCKET " + sc); // read a message from
-														// the client
+					// read a message from the client
+					System.out.println("SOCKET " + sc);
 					bytesRead = 0;
 					readbuffer.clear();
 					boolean requestActive = false;
@@ -153,11 +161,13 @@ public class MultiplexServer extends Thread {
 							+ " bytes from a client socket.");
 					String response = new String();
 					response = "";
+
 					ClientInfo info = (ClientInfo) sc.keyFor(selector)
 							.attachment();
-
 					if (bytesRead == -1) {
+
 						System.out.println("Client has disconnected.");
+						handle.sendMessage(createMsg("Client has disconnected."));
 						key.cancel();
 						try {
 							sc.close();
@@ -170,42 +180,52 @@ public class MultiplexServer extends Thread {
 								bytesRead);
 						System.out.println("The client said: " + request);
 
-						switch (request) {
-						case "ON_SINCE":
-							response = "You've been connected for: "
-									+ (int) ((System.currentTimeMillis() - info.timeOfConnection) / 1000)
-									+ " s";
-							break;
-						case "IDLE_SINCE": {
-							response = "You've been idle for: "
-									+ (int) ((System.currentTimeMillis() - info.timeOfLastRequest) / 1000)
-									+ " s";
-							break;
+						handle.sendMessage(createMsg("The client said: "
+								+ request));
+						
+						if (info.getStatus()) {
+							switch (request) {
+							case "since":
+								response = "You've been connected for: "
+										+ (int) ((System.currentTimeMillis() - info.timeOfConnection) / 1000)
+										+ " s";
+								break;
+							case "idle": {
+								response = "You've been idle for: "
+										+ (int) ((System.currentTimeMillis() - info.timeOfLastRequest) / 1000)
+										+ " s";
+								break;
+							}
+							case "rqs":
+								response = "Number of requests served: "
+										+ numOfRequests;
+								break;
+							case "quit": {
+								response = "Closing connection";
+								closeConnection = true;
+								break;
+							}
+							case "username": {
+								response = "USERNAME";
+								break;
+							}
+							default: {
+								response = "BAD";
+								break;
+							}
+							}
+						} else {
+							info.setIp(request);
+							info.setStatus(true);
+							response = "IP saved";
 						}
-						case "REQUESTS":
-							response = "Number of requests served: "
-									+ numOfRequests;
-							break;
-						case "QUIT": {
-							response = "Closing connection";
-							closeConnection = true;
-							break;
-						}
-						case "username": {
-							response = "USERNAME";
-							break;
-						}
-						default: {
-							response = "BAD";
-							break;
-						}
-						}
+
 						info.setTimeOfLastRequest(System.currentTimeMillis());
 
 						numOfRequests++;
 
 						// switch the buffer so the input is heading out
-						// readbuffer.clear();
+						readbuffer.clear();
 						System.out.println(response); // clear buffer from
 														// remaining chars
 						response += "    ";
@@ -245,11 +265,16 @@ public class MultiplexServer extends Thread {
 		private Long timeOfConnection;
 		private Long timeOfLastRequest;
 		private int id;
+		private String ip;
+		boolean beenServed = false;
+		private String username;
+		private UUID uid;
 
-		public ClientInfo(Long connect, Long lrequest, int id) {
+		public ClientInfo(Long connect, Long lrequest, int id, String ip) {
 			timeOfConnection = connect;
 			timeOfLastRequest = lrequest;
 			this.id = id;
+			this.ip = ip;
 		}
 
 		/**
@@ -280,5 +305,37 @@ public class MultiplexServer extends Thread {
 		public int getId() {
 			return id;
 		}
+
+		public String getIp() {
+			return ip;
+		}
+
+		public void setIp(String ip) {
+			this.ip = ip;
+		}
+
+		public boolean getStatus() {
+			return this.beenServed;
+		}
+
+		public void setStatus(boolean status) {
+			this.beenServed = status;
+		}
+
+		public String getUsername() {
+			return this.username;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
+	}
+
+	public Message createMsg(String strMsg) {
+		Bundle b = new Bundle();
+		b.putString("msg", strMsg);
+		Message msg = handle.obtainMessage();
+		msg.setData(b);
+		return msg;
 	}
 }
