@@ -1,0 +1,4 @@
+Task: Create double view camera using metaio Camera instance
+Author: Team
+Owner: Zhanbolat and Zarina
+Deadline: April, 26
