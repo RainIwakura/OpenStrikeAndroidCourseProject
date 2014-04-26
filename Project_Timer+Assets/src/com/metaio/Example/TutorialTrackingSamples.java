@@ -69,7 +69,6 @@ public class TutorialTrackingSamples extends ARViewActivity {
 		if (metaioSDK != null) {
 			// get all detected poses/targets
 			TrackingValuesVector poses = metaioSDK.getTrackingValues();
-
 			// if we have detected one, attach our metaio man to this coordinate
 			// system Id
 			if (poses.size() != 0) {
@@ -233,7 +232,6 @@ public class TutorialTrackingSamples extends ARViewActivity {
 					// Set geometry properties
 					mHealth.setScale(0.05f);
 					mHealth.setRotation(new Rotation(4f, 4f, 4f));
-
 					MetaioDebug.log("Loaded geometry " + modelPath);
 				} else
 					MetaioDebug.log(Log.ERROR, "Error loading geometry: "
