@@ -22,10 +22,12 @@ import com.metaio.tools.io.AssetsManager;
 
 public class TutorialTrackingSamples extends ARViewActivity {
 
-	// private IGeometry mMetaioMan;
 	private IGeometry mImagePlane;
 	private IGeometry mHealth;
 	private IGeometry mDead;
+	private IGeometry mWin;
+	private IGeometry mShield;
+	private IGeometry mSword;
 	String trackingConfigFile;
 	private boolean block = false;
 	// timer
@@ -68,18 +70,21 @@ public class TutorialTrackingSamples extends ARViewActivity {
 
 	public synchronized void checkLife() {
 		if (timeInMilliseconds > 1500L && !block) {
-				block = true;
-				stopTimer();
-				check++;
-				System.out.println(">> "+timeInMilliseconds+" "+check);
-				System.out.println(player.getHealth());
-				player.setHealth(player.getHealth() - 20);
-				startTimer();
-				mImagePlane.setVisible(false);
-		} else
-				mImagePlane.setVisible(true);
+			block = true;
+			stopTimer();
+			check++;
+			System.out.println(">> " + timeInMilliseconds + " " + check);
+			System.out.println(player.getHealth());
+			player.setHealth(player.getHealth() - 20);
+			startTimer();
+			mImagePlane.setVisible(false);
+			mShield.setVisible(true);
+		} else {
+			mImagePlane.setVisible(true);
+			mShield.setVisible(false);
+		}
 	}
-	
+
 	@Override
 	public void onDrawFrame() {
 		super.onDrawFrame();
@@ -93,7 +98,7 @@ public class TutorialTrackingSamples extends ARViewActivity {
 				// Detect which picture is detected and assign appropriate asset
 				for (int i = 0; i < poses.size(); i++) {
 					if (poses.get(i).isTrackingState()) {
-						if (poses.get(i).getCoordinateSystemID() == 1) {
+						if (poses.get(i).getCoordinateSystemID() == 5) {
 							// start timer
 							if (timeInMilliseconds == 0) {
 								startTimer();
@@ -105,25 +110,37 @@ public class TutorialTrackingSamples extends ARViewActivity {
 							if (timeInMilliseconds == 0) {
 								startTimer();
 							}
-							mImagePlane.setCoordinateSystemID(poses.get(i)
+							mSword.setCoordinateSystemID(poses.get(i)
 									.getCoordinateSystemID());
+							//mSword.setVisible(true); // ??????
 						} else if (poses.get(i).getCoordinateSystemID() == 3) {
 							// start timer
 							if (timeInMilliseconds == 0) {
 								startTimer();
 							}
+
+							mShield.setCoordinateSystemID(poses.get(i)
+									.getCoordinateSystemID());
+							//mShield.setVisible(true);
 							if (timeInMilliseconds > 1000L) {
 								mImagePlane.setCoordinateSystemID(poses.get(i)
 										.getCoordinateSystemID());
-									checkLife();
+								checkLife();
 								if (!player.isAlive()) {
 									mImagePlane.setVisible(false);
+									mShield.setVisible(false);
 									mDead.setCoordinateSystemID(poses.get(i)
 											.getCoordinateSystemID());
 								}
-							} else if (timeInMilliseconds > 6000L
-									&& timeInMilliseconds < 8000L) {
+							} 
+						}
+
+						else if (poses.get(i).getCoordinateSystemID() == 4) {
+							if (timeInMilliseconds == 0) {
+								startTimer();
 							}
+							mWin.setCoordinateSystemID(poses.get(i)
+									.getCoordinateSystemID());
 						}
 					} else {
 						stopTimer();
@@ -228,7 +245,7 @@ public class TutorialTrackingSamples extends ARViewActivity {
 					"TutorialTrackingSamples/Assets/TrackingData_Marker.xml");
 			metaioSDK.setTrackingConfiguration(trackingConfigFile);
 
-			// Loading image geometry
+			// Loading blood
 			final String imagePath = AssetsManager.getAssetPath(
 					getApplicationContext(),
 					"TutorialTrackingSamples/Assets/health/blood.png");
@@ -243,6 +260,7 @@ public class TutorialTrackingSamples extends ARViewActivity {
 				}
 			}
 
+			// Lost image
 			final String deadPath = AssetsManager.getAssetPath(
 					getApplicationContext(),
 					"TutorialTrackingSamples/Assets/health/dead.jpg");
@@ -257,6 +275,41 @@ public class TutorialTrackingSamples extends ARViewActivity {
 							+ deadPath);
 				}
 			}
+
+			// Loading sword
+			final String swordPath = AssetsManager.getAssetPath(
+					getApplicationContext(),
+					"TutorialTrackingSamples/Assets/sword.png");
+			if (imagePath != null) {
+				mSword = metaioSDK.createGeometryFromImage(swordPath);
+				if (mSword != null) {
+					mSword.setScale(1.0f);
+					MetaioDebug.log("Loaded geometry " + swordPath);
+				} else {
+					MetaioDebug.log(Log.ERROR, "Error loading geometry: "
+							+ swordPath);
+				}
+			}
+
+			// Loading win
+			mWin = metaioSDK.createGeometryFromImage(AssetsManager
+					.getAssetPath(getApplicationContext(),
+							"TutorialTrackingSamples/Assets/win.jpg"));
+			if (mWin != null) {
+				mWin.setScale(1.0f);
+				MetaioDebug.log("Loaded geometry ");
+			}
+
+			// Loading shield
+			mShield = metaioSDK.createGeometryFromImage(AssetsManager
+					.getAssetPath(getApplicationContext(),
+							"TutorialTrackingSamples/Assets/shield.png"));
+			if (mShield != null) {
+				mShield.setScale(1.0f);
+				MetaioDebug.log("Loaded geometry ");
+			}
+
+			// Health object
 			final String modelPath = AssetsManager.getAssetPath(
 					getApplicationContext(),
 					"TutorialTrackingSamples/Assets/health/health.md2");
