@@ -1,0 +1,4 @@
+Task: Allow tracking and showing AR assets on double camera
+Author: Team
+Owner: Kamila, Zarina and Zhanbolat
+Deadline: April, 26
