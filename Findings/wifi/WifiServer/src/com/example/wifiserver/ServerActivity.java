@@ -25,7 +25,7 @@ public class ServerActivity extends Activity {
 	private boolean showIpButtonStatus  = false;
 	private int port; 
 	private Handler handle;
-
+	TextView status;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,13 +41,14 @@ public class ServerActivity extends Activity {
                 
 			}
 		};
-		final TextView status = (TextView) findViewById(R.id.status);
+		status = (TextView) findViewById(R.id.status);
+	
 		this.handle = new Handler() {
 			 public void handleMessage(Message msg) {
 				    Bundle bundle = msg.getData();
 				    status.setText(bundle.getString("msg"));
 				    System.out.println("working");
-					System.out.println("in handler"+ status.hashCode());
+					System.out.println("in handler "+ status.hashCode());
 		     }
 			
 			};
@@ -134,4 +135,16 @@ public class ServerActivity extends Activity {
 		handle.removeCallbacks(null);
 		finish();
 	}
+	
+	
+    protected void onSaveInstanceState(Bundle outState) {
+		    super.onSaveInstanceState(outState);
+		    //outState.put
+    }
+    
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+
 }
