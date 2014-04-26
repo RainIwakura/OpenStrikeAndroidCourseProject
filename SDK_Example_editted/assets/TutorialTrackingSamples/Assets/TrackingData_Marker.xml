@@ -146,7 +146,16 @@
 					</MarkerParameters>
 				</Parameters>
 			</SensorCOS>
-			
+				
+			<SensorCOS>
+				<SensorCosID>Marker5</SensorCosID>
+				<Parameters>
+					<MarkerParameters>
+						<Size>60</Size>
+						<MatrixID>5</MatrixID>
+					</MarkerParameters>
+				</Parameters>
+			</SensorCOS>
 			
 		</Sensor>
 	</Sensors>
@@ -287,6 +296,7 @@
 				</COSOffset>
 			</SensorSource>
 		</COS>
+		
 		<COS>
 			<Name>COS4</Name>
 			<Fuser type="SmoothingFuser">
@@ -331,5 +341,52 @@
 				</COSOffset>
 			</SensorSource>
 		</COS>
+		
+		<COS>
+			<Name>COS5</Name>
+			<Fuser type="SmoothingFuser">
+				<Parameters>
+					<!-- Alpha is in the range [0...1] and determines how strong a new pose is.
+				  alpha = 0.9: less smoothing
+				  alpha = 0.1: alot smoothing-->
+					<AlphaRotation>0.5</AlphaRotation> 
+					<AlphaTranslation>0.8</AlphaTranslation>
+					<!-- if we lose tracking, keep the old pose for several frames -->
+					<KeepPoseForNumberOfFrames>3</KeepPoseForNumberOfFrames>
+				</Parameters>
+			</Fuser>
+			<SensorSource trigger="1">
+				<SensorID>Markertracking1</SensorID>
+				<SensorCosID>Marker5</SensorCosID>
+				<HandEyeCalibration>
+					<TranslationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+					</TranslationOffset>
+					<RotationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+						<w>1</w>
+					</RotationOffset>
+				</HandEyeCalibration>
+				<COSOffset>
+					<TranslationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+					</TranslationOffset>
+					<RotationOffset>
+						<x>0</x>
+						<y>0</y>
+						<z>0</z>
+						<w>1</w>
+					</RotationOffset>
+				</COSOffset>
+			</SensorSource>
+		</COS>
+		
+		
 	</Connections>
 </TrackingData>
