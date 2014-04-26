@@ -2,6 +2,7 @@
 package com.metaio.Example;
 
 import java.io.IOException;
+import java.util.concurrent.locks.ReentrantLock;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -26,8 +27,9 @@ public class TutorialTrackingSamples extends ARViewActivity {
 	private IGeometry mHealth;
 	private IGeometry mDead;
 	String trackingConfigFile;
-
+	private boolean block = false;
 	// timer
+	private int check = 0;
 	private Button startButton;
 	// private Button pauseButton;
 	private Button stopButton;
@@ -64,6 +66,20 @@ public class TutorialTrackingSamples extends ARViewActivity {
 		return R.layout.tutorial_trackingsamples3;
 	}
 
+	public synchronized void checkLife() {
+		if (timeInMilliseconds > 1500L && !block) {
+				block = true;
+				stopTimer();
+				check++;
+				System.out.println(">> "+timeInMilliseconds+" "+check);
+				System.out.println(player.getHealth());
+				player.setHealth(player.getHealth() - 20);
+				startTimer();
+				mImagePlane.setVisible(false);
+		} else
+				mImagePlane.setVisible(true);
+	}
+	
 	@Override
 	public void onDrawFrame() {
 		super.onDrawFrame();
@@ -71,85 +87,48 @@ public class TutorialTrackingSamples extends ARViewActivity {
 		if (metaioSDK != null) {
 			// get all detected poses/targets
 			TrackingValuesVector poses = metaioSDK.getTrackingValues();
-
 			// if we have detected one, attach our metaio man to this coordinate
 			// system Id
 			if (poses.size() != 0) {
-				// //////////////////////////////////////////
 				// Detect which picture is detected and assign appropriate asset
 				for (int i = 0; i < poses.size(); i++) {
 					if (poses.get(i).isTrackingState()) {
-
-						System.out.println("IS TRACKING " + i);
-
 						if (poses.get(i).getCoordinateSystemID() == 1) {
 							// start timer
 							if (timeInMilliseconds == 0) {
-
 								startTimer();
 							}
 							mHealth.setCoordinateSystemID(poses.get(i)
 									.getCoordinateSystemID());
-
 						} else if (poses.get(i).getCoordinateSystemID() == 2) {
-
 							// start timer
 							if (timeInMilliseconds == 0) {
-
 								startTimer();
 							}
-
 							mImagePlane.setCoordinateSystemID(poses.get(i)
 									.getCoordinateSystemID());
-
-						}
-
-						else if (poses.get(i).getCoordinateSystemID() == 3) {
-
+						} else if (poses.get(i).getCoordinateSystemID() == 3) {
 							// start timer
 							if (timeInMilliseconds == 0) {
-
 								startTimer();
 							}
-
-							if ((timeInMilliseconds > 3000L && timeInMilliseconds < 6000L)
-									|| timeInMilliseconds > 8000L) {
-//								mHealth.setCoordinateSystemID(poses.get(i)
-//										.getCoordinateSystemID());
-//								mImagePlane.setVisible(false);
-//								mHealth.setVisible(true);
+							if (timeInMilliseconds > 1000L) {
 								mImagePlane.setCoordinateSystemID(poses.get(i)
 										.getCoordinateSystemID());
-								if (timeInMilliseconds > 4000L && timeInMilliseconds < 6000L) {
-									player.setHealth(player.getHealth()-20);
-									timeInMilliseconds = 0;
-									mImagePlane.setVisible(false);
-								} else
-									mImagePlane.setVisible(true);
-								
+									checkLife();
 								if (!player.isAlive()) {
 									mImagePlane.setVisible(false);
 									mDead.setCoordinateSystemID(poses.get(i)
 											.getCoordinateSystemID());
-								} else {
-									
 								}
 							} else if (timeInMilliseconds > 6000L
 									&& timeInMilliseconds < 8000L) {
-//								mImagePlane.setCoordinateSystemID(poses.get(i)
-//										.getCoordinateSystemID());
-//								mHealth.setVisible(false);
-//								mImagePlane.setVisible(true);
 							}
 						}
 					} else {
-						System.out.println("NOT TRACKING " + i);
-						System.out.println(poses.get(i).isTrackingState());
 						stopTimer();
-
 					}
 				}
-				// ////////////////////////////////////
 
 			}
 
@@ -213,11 +192,9 @@ public class TutorialTrackingSamples extends ARViewActivity {
 	}
 
 	public void stopTimer() {
-
 		timeInMilliseconds = 0;
 		customHandler.removeCallbacks(updateTimerThread);
-		// timerValue.setText("" + 00 + ":" + String.format("%02d", 00) + ":"
-		// + String.format("%03d", 00));
+		block = false;
 	}
 
 	@Override
@@ -265,7 +242,7 @@ public class TutorialTrackingSamples extends ARViewActivity {
 							+ imagePath);
 				}
 			}
-			
+
 			final String deadPath = AssetsManager.getAssetPath(
 					getApplicationContext(),
 					"TutorialTrackingSamples/Assets/health/dead.jpg");
@@ -307,7 +284,6 @@ public class TutorialTrackingSamples extends ARViewActivity {
 		public void run() {
 
 			timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
-
 			// updatedTime = timeSwapBuff + timeInMilliseconds;
 			//
 			// int secs = (int) (updatedTime / 1000);
