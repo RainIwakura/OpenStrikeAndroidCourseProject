@@ -39,7 +39,16 @@ public class MultiplexServer extends Thread {
 		this.message = msg;
 		this.wifiInfo = wifiInfo;
 	}
-
+	
+	
+	public void setHandler (Handler handler) {
+		this.handle = handler;
+	}
+	
+	public Handler getHandler () {
+		return handle;
+	}
+	
 	/*
 	 * Handle all the clients
 	 */
@@ -85,7 +94,7 @@ public class MultiplexServer extends Thread {
 					+ " sockets ready to be checked.");
 			String strMsg = "There are " + readyKeys.size()
 					+ " sockets ready to be checked.";
-
+		
 			handle.sendMessage(createMsg(strMsg));
 
 			// Wait so we can follow the output
