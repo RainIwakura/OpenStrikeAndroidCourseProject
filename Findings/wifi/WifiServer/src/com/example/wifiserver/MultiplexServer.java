@@ -14,6 +14,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
 
+import com.example.wifiserver.ServerActivity.PrintRunnable;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,11 +29,13 @@ public class MultiplexServer extends Thread {
 	Set<SelectionKey> readyKeys;
 	private int numOfRequests = 0;
 	private Handler handle;
-	private Runnable message;
+	private PrintRunnable message;
 	private String wifiInfo;
+	private ServerActivity sActivity;
+	
 
 	public MultiplexServer(String wifiInfo, Integer port, Handler handle,
-			Runnable msg) {
+			PrintRunnable msg) {
 		// process the command-line args
 
 		this.port = port;
@@ -49,6 +53,10 @@ public class MultiplexServer extends Thread {
 		return handle;
 	}
 	
+	public void setActivity (ServerActivity sa) {
+		this.sActivity = sa;
+	}
+	
 	/*
 	 * Handle all the clients
 	 */
@@ -64,9 +72,7 @@ public class MultiplexServer extends Thread {
 			selector = sp.openSelector();
 			serverSock = sp.openServerSocketChannel();
 			serverSock.configureBlocking(false);
-			serverSock.socket()
-					.bind(new InetSocketAddress(
-							InetAddress.getByName(wifiInfo), port));
+			serverSock.socket().bind(new InetSocketAddress(InetAddress.getByName(wifiInfo), port));
 			serverSock.register(selector, SelectionKey.OP_ACCEPT);
 		} catch (IOException io) {
 			io.printStackTrace();
@@ -74,7 +80,10 @@ public class MultiplexServer extends Thread {
 
 		int bytesRead;
 		boolean closeConnection = false;
-
+		
+		
+	//	this.sActivity.runOnUiThread(action);
+		
 		for (;;) {
 			// Wait for something to happen on one of our sockets // If nothing
 			// is happening then we can feel free to block
@@ -96,7 +105,7 @@ public class MultiplexServer extends Thread {
 					+ " sockets ready to be checked.";
 		
 			handle.sendMessage(createMsg(strMsg));
-
+			
 			// Wait so we can follow the output
 			try {
 				Thread.sleep(1000);
@@ -108,7 +117,7 @@ public class MultiplexServer extends Thread {
 				// Two possibilities: it's a new client knocking
 				// or it's an existing client with a request
 				SelectionKey key = (SelectionKey) it.next();
-				if (key.isAcceptable()) {
+				if ((key.readyOps() & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT) {
 
 					System.out.println("Action on the listen socket.");
 
@@ -121,11 +130,7 @@ public class MultiplexServer extends Thread {
 					try {
 						if (ssc == null) {
 							System.out.println("null 1");
-
 						}
-						ServerSocket sock = ssc.socket();
-						System.out.println(sock.getLocalPort());
-						System.out.println(sock.getInetAddress().toString());
 
 						SocketChannel sc = ssc.accept();
 						if (sc == null) {
@@ -151,7 +156,7 @@ public class MultiplexServer extends Thread {
 
 					System.out.println("Registered a new client.");
 
-				} else if (key.isReadable()) {
+				} else if ((key.readyOps() & SelectionKey.OP_READ) == SelectionKey.OP_READ) {
 					System.out.println("Action on a client socket.");
 					// So this socket is a client socket
 					SocketChannel sc = (SocketChannel) key.channel();
@@ -191,7 +196,10 @@ public class MultiplexServer extends Thread {
 
 						handle.sendMessage(createMsg("The client said: "
 								+ request));
-						
+				/*		this.message.setText("The client said: " + request);
+						sActivity.runOnUiThread(message);
+						*/
+						System.out.println("was here");
 						if (info.getStatus()) {
 							switch (request) {
 							case "since":
@@ -235,18 +243,18 @@ public class MultiplexServer extends Thread {
 
 						// switch the buffer so the input is heading out
 						readbuffer.clear();
-						System.out.println(response); // clear buffer from
-														// remaining chars
+						System.out.println(response); // clear buffer from remaining chars
 						response += "    ";
 						readbuffer.put(response.getBytes());
 						readbuffer.flip();
-						try {
-							sc.write(readbuffer);
-						} catch (IOException ioe) {
-							System.out.println("IOexception: line 239");
-							ioe.printStackTrace();
+						while (readbuffer.hasRemaining()) {
+							try {
+								sc.write(readbuffer);
+							} catch (IOException ioe) {
+								System.out.println("IOexception: line 239");
+								ioe.printStackTrace();
+							}
 						}
-
 						readbuffer.clear();
 
 						if (closeConnection) {
@@ -269,6 +277,9 @@ public class MultiplexServer extends Thread {
 
 	}
 
+	public void BroadcastMessage (String message) {
+		
+	}
 	class ClientInfo {
 
 		private Long timeOfConnection;

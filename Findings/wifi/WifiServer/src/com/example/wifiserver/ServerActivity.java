@@ -32,9 +32,7 @@ public class ServerActivity extends Activity {
 		    public void handleMessage(Message msg) {
 		      ServerActivity activity = mActivity.get();
 		      if (activity != null) {
-		    	  TextView v  = activity.status;
-		    	  v.setText(msg.getData().getString("msg"));
-		    	  System.out.println("In handler: " + v.hashCode());
+		    	  activity.getStatus().setText(msg.getData().getString("msg"));
 		      }
 		    }
 	}
@@ -50,6 +48,21 @@ public class ServerActivity extends Activity {
 	MultiplexServer server;
 
 	
+	class PrintRunnable implements Runnable {
+		
+		String text = null;
+		
+		public void setText (String str) {
+			text = str;
+		}
+		
+		public void run() {
+			TextView v = (TextView) findViewById (R.id.status);
+			v.setText(text);
+		}
+		
+	};
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_srv);
@@ -57,20 +70,12 @@ public class ServerActivity extends Activity {
 		ipView.setVisibility(View.VISIBLE);
 		ipView.setText("IP " + getIpAddr());
 		System.out.println("new server");
-		Runnable startServer = new Runnable() {
-			public void run() {
-				Toast toast = new Toast(getApplicationContext());
-				toast.makeText(getApplicationContext(), "Yes",
-						Toast.LENGTH_LONG).show();
-
-			}
-		};
-
+		
 		int port = 5555;
-		server = new MultiplexServer(getIpAddr(), port, mHandler, startServer);
+		server = new MultiplexServer(getIpAddr(), port, mHandler, new PrintRunnable());
+		server.setActivity(this);
 		pool.execute(server);
-		status = (TextView) findViewById(R.id.status);
-		System.out.println("IN oncreate hash " + this.hashCode());
+
 	}
 
 	private final ThreadPoolExecutor pool = new ThreadPoolExecutor(1, 1, 1,
@@ -83,6 +88,11 @@ public class ServerActivity extends Activity {
 		return true;
 	}
 
+	public TextView getStatus() {
+		TextView v = (TextView) findViewById(R.id.status);
+		return v;
+	}
+	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
@@ -151,6 +161,11 @@ public class ServerActivity extends Activity {
 		pool.purge();
 		if (pool.isTerminated()) {
 			System.out.println("is terminated");
+		}
+		server.interrupt();
+		if (server.isInterrupted()) {
+			System.out.println("Thread was " +
+					"finally killed");
 		}
 		finish();
 	}
