@@ -118,18 +118,10 @@ public class ServerThread extends Thread {
 	
 	public Message createBundleMsg(String strMsg) {
 		Bundle b = new Bundle();
-		b.putString("msg", strMsg);
+		b.putString("msg_s", strMsg);
 		Message msg = handle.obtainMessage();
 		msg.setData(b);
 		return msg;
-	}
-	
-	
-	public void closeSocket () {
-		keepRunning = false;
-		if (this.serverSocket.isBound()) {
-			this.serverSocket.close();
-		}
 	}
 	
 	
@@ -143,84 +135,6 @@ public class ServerThread extends Thread {
 		return handle;
 	}
 	
-	public void setActivity (ServerActivity sa) {
-		this.sActivity = sa;
-	}
 	
-	/*
-	 * Handle all the clients
-	 */
 
-	class ClientInfo {
-
-		private Long timeOfConnection;
-		private Long timeOfLastRequest;
-		private int id;
-		private String ip;
-		boolean beenServed = false;
-		private String username;
-		private UUID uid;
-
-		public ClientInfo(Long connect, Long lrequest, int id, String ip) {
-			timeOfConnection = connect;
-			timeOfLastRequest = lrequest;
-			this.id = id;
-			this.ip = ip;
-		}
-
-		/**
-		 * @return the timeOfConnection
-		 */
-		public Long getTimeOfConnection() {
-			return timeOfConnection;
-		}
-
-		/**
-		 * @return the timeOfLastRequest
-		 */
-		public Long getTimeOfLastRequest() {
-			return timeOfLastRequest;
-		}
-
-		/**
-		 * @param timeOfLastRequest
-		 *            the timeOfLastRequest to set
-		 */
-		public void setTimeOfLastRequest(Long timeOfLastRequest) {
-			this.timeOfLastRequest = timeOfLastRequest;
-		}
-
-		/**
-		 * @return the id
-		 */
-		public int getId() {
-			return id;
-		}
-
-		public String getIp() {
-			return ip;
-		}
-
-		public void setIp(String ip) {
-			this.ip = ip;
-		}
-
-		public boolean getStatus() {
-			return this.beenServed;
-		}
-
-		public void setStatus(boolean status) {
-			this.beenServed = status;
-		}
-
-		public String getUsername() {
-			return this.username;
-		}
-
-		public void setUsername(String username) {
-			this.username = username;
-		}
-	}
-
-	
 }

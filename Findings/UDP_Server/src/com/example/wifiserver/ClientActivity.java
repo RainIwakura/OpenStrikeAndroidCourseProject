@@ -41,7 +41,8 @@ public class ClientActivity extends Activity {
 	Button sndMsg;
 	ClientThread cThread;
 	DatagramSocket socket;
-
+	private String username;
+	
 	private final ThreadPoolExecutor pool = new ThreadPoolExecutor(1, 1, 1,
 			TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
@@ -57,7 +58,11 @@ public class ClientActivity extends Activity {
 		sndMsg = (Button) findViewById(R.id.sendMsg);
 		sndMsg.setVisibility(View.INVISIBLE);
 		
-		cThread = new ClientThread(socket,null, this.handle, getIpAddr());
+		Intent intent = getIntent();
+		this.username = intent.getStringExtra("username");
+
+
+		cThread = new ClientThread(socket, null, this.handle, getIpAddr());
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,8 +94,7 @@ public class ClientActivity extends Activity {
 		Toast.makeText(getApplicationContext(), this.serverIP, 1000);
 		cThread.setIpAddres(this.serverIP);
 		pool.execute(cThread);
-		
-		
+
 		this.msg.setVisibility(View.VISIBLE);
 		this.msgName.setVisibility(View.VISIBLE);
 		this.sndMsg.setVisibility(View.VISIBLE);
@@ -113,42 +117,42 @@ public class ClientActivity extends Activity {
 
 		return ipString;
 	}
-	
-	
-	class SendMessageTask extends AsyncTask <String, Void, String> {
-		
+
+	class SendMessageTask extends AsyncTask<String, Void, String> {
+
 		String message = null;
 		DatagramSocket socket;
-		
+
 		public SendMessageTask(DatagramSocket s) {
 			socket = s;
 		}
-		
+
 		@SuppressWarnings("resource")
 		@Override
 		protected String doInBackground(String... params) {
-			
+
 			if (!socket.isBound()) {
 				System.out.println("socket in task is null");
-			} 
+			}
 			try {
-				socket = new DatagramSocket (5565);
+				socket = new DatagramSocket(5565);
 			} catch (SocketException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 			try {
-				socket.send(new DatagramPacket(params[0].getBytes(),params[0].getBytes().length,
-						InetAddress.getByName(params[1]), 5555));
+				socket.send(new DatagramPacket(params[0].getBytes(), params[0]
+						.getBytes().length, InetAddress.getByName(params[1]),
+						5555));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			return "message sent";
 		}
-		
+
 	}
 
 }

@@ -20,15 +20,9 @@
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
+        
         <Button
-            android:id="@+id/button_show_ip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Show Ip" 
-            android:onClick="showIp"/>
-
-        <Button
-            android:id="@+id/button1"
+            android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Back"

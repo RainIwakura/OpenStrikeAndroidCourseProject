@@ -1,6 +1,5 @@
 package com.example.wifiserver;
 
-import java.lang.ref.WeakReference;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -24,7 +23,7 @@ public class ServerActivity extends Activity {
 	Handler handle = new Handler() {	
 		public void handleMessage(Message msg) {
 			Bundle b = msg.getData();
-			String message = b.getString("msg");
+			String message = b.getString("msg_s");
 			TextView v = (TextView) findViewById (R.id.server_status_field);
 			v.setText(message);
 		}
@@ -35,26 +34,16 @@ public class ServerActivity extends Activity {
 	private int port;
 	TextView status;
 	ServerThread server;
-	
-	class PrintRunnable implements Runnable {
-		
-		String text = null;
-		
-		public void setText (String str) {
-			text = str;
-		}
-		
-		public void run() {
-			TextView v = (TextView) findViewById (R.id.server_status_field);
-			v.setText(text);
-		}
-		
-	};
-	
+	private String username;
+
+	private final ThreadPoolExecutor pool = new ThreadPoolExecutor(1, 1, 1,
+			TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_srv);
+		Intent intent = getIntent();
+		this.username = intent.getStringExtra("username");
 		ipView = (TextView) findViewById(R.id.showIp);
 		ipView.setVisibility(View.VISIBLE);
 		ipView.setText("IP " + getIpAddr());
@@ -63,13 +52,9 @@ public class ServerActivity extends Activity {
 		int port = 5555;
 	
 		server = new ServerThread(getIpAddr(), port, handle, new PrintRunnable());
-		server.setActivity(this);
 		pool.execute(server);
-		System.out.println("on create");
 	}
 
-	private final ThreadPoolExecutor pool = new ThreadPoolExecutor(1, 1, 1,
-			TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -78,11 +63,7 @@ public class ServerActivity extends Activity {
 		return true;
 	}
 
-	/*public TextView getStatus() {
-		TextView v = (TextView) findViewById(R.id.status);
-		return v;
-	}*/
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
@@ -94,17 +75,6 @@ public class ServerActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void showIp(View v) {
-	/*	if (!this.showIpButtonStatus) {
-			String host = this.getIpAddr();
-			ipView.setVisibility(View.VISIBLE);
-			ipView.setText("IP " + host);
-			this.showIpButtonStatus = true;
-		} else {
-			ipView.setVisibility(View.INVISIBLE);
-			this.showIpButtonStatus = false;
-		}*/
-	}
 
 	public String getIpAddr() {
 		WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
@@ -116,7 +86,7 @@ public class ServerActivity extends Activity {
 
 		return ipString;
 	}
-
+/*
 	public void onPause() {
 		super.onPause();
 //		mHandler.removeCallbacksAndMessages(null);
@@ -138,7 +108,7 @@ public class ServerActivity extends Activity {
 	public void onDestroy() {
 		super.onDestroy();
 		//mHandler.removeCallbacks(null);
-	}
+	}*/
 
 	public void goBack(View v) {
 		Intent intent = new Intent(this, MainActivity.class);
@@ -165,4 +135,22 @@ public class ServerActivity extends Activity {
 		super.onRestoreInstanceState(savedInstanceState);
 	}
 */
+	
+	
+	
+
+	class PrintRunnable implements Runnable {
+		
+		String text = null;
+		
+		public void setText (String str) {
+			text = str;
+		}
+		
+		public void run() {
+			TextView v = (TextView) findViewById (R.id.server_status_field);
+			v.setText(text);
+		}
+		
+	};
 }
