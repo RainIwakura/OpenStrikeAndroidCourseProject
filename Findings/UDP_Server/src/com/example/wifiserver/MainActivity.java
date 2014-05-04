@@ -43,13 +43,13 @@ public class MainActivity extends Activity {
 	}
 	
 	public void createServerActivity (View view){
-		Intent intent = new Intent(this, ClientActivity.class);
+		Intent intent = new Intent(this, ServerActivity.class);
 		startActivity(intent);
 		System.out.println("restarting server");
 		finish();
 	}
 	public void createClientActivity (View view){
-		Intent intent = new Intent(this, ServerActivity.class);
+		Intent intent = new Intent(this, ClientActivity.class);
 		startActivity(intent);
 		finish();
 	}

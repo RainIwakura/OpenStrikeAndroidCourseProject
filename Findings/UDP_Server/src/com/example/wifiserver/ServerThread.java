@@ -27,7 +27,8 @@ public class ServerThread extends Thread {
 	private DatagramSocket serverSocket;
 	private DatagramPacket packet;
 	private Map<String, InetAddress> hashMap;
-
+	private boolean keepRunning = true;
+	
 	public ServerThread(String wifiInfo, Integer port, Handler handle,
 			PrintRunnable msg) {
 		// process the command-line args
@@ -37,7 +38,8 @@ public class ServerThread extends Thread {
 		this.wifiInfo = wifiInfo;
 		this.hashMap = new HashMap<String, InetAddress>();
 		try {
-			this.serverSocket = new DatagramSocket(port, InetAddress.getByName(wifiInfo));
+			this.serverSocket = new DatagramSocket(null);
+			serverSocket.bind(new InetSocketAddress(InetAddress.getByName(wifiInfo), port));
 			System.out.println("ss is created");
 		} catch (SocketException | UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -54,7 +56,7 @@ public class ServerThread extends Thread {
 		packet = new DatagramPacket(buffer,buffer.length);
 		
 		System.out.println("in server 1");
-		while (true) {
+		while (keepRunning) {
 			System.out.println("in server 2");
 			if (serverSocket == null) {
 				System.out.println("ss is null");
@@ -69,9 +71,17 @@ public class ServerThread extends Thread {
 				e.printStackTrace();
 			}
 			String request = new String(packet.getData(), 0, packet.getLength());
-			System.out.println(request.substring(5, request.length() - 1));
 			
-			if ( !hashMap.containsKey(request.substring(5, request.length() - 1)) && request.substring(0, 3) == "JOIN") {
+			
+			String message = "User request is: " + request;
+			
+			this.handle.sendMessage(this.createBundleMsg(message));
+			
+			if ( hashMap.containsKey(request.substring(5, request.length()))) {
+				System.out.println("user exists");
+			}
+			
+			if ( !hashMap.containsKey(request.substring(5, request.length())) && request.substring(0, 3) == "JOIN") {
 				hashMap.put(request.substring(5, request.length() - 1), packet.getAddress());
 				reply = "Welcome";
 			} else if ( ( hashMap.containsKey(request.substring(5, request.length() - 1)) ) && (request.substring(0, 3) == "JOIN") ) {
@@ -106,10 +116,21 @@ public class ServerThread extends Thread {
 	}
 	
 	
+	public Message createBundleMsg(String strMsg) {
+		Bundle b = new Bundle();
+		b.putString("msg", strMsg);
+		Message msg = handle.obtainMessage();
+		msg.setData(b);
+		return msg;
+	}
 	
 	
-	
-	
+	public void closeSocket () {
+		keepRunning = false;
+		if (this.serverSocket.isBound()) {
+			this.serverSocket.close();
+		}
+	}
 	
 	
 	
@@ -201,11 +222,5 @@ public class ServerThread extends Thread {
 		}
 	}
 
-	public Message createMsg(String strMsg) {
-		Bundle b = new Bundle();
-		b.putString("msg", strMsg);
-		Message msg = handle.obtainMessage();
-		msg.setData(b);
-		return msg;
-	}
+	
 }

@@ -39,8 +39,8 @@ public final class R {
         public static final int msgName=0x7f080004;
         public static final int sendIpButton=0x7f080005;
         public static final int sendMsg=0x7f080007;
+        public static final int server_status_field=0x7f080011;
         public static final int showIp=0x7f08000e;
-        public static final int status=0x7f080011;
         public static final int status2=0x7f080008;
         public static final int textView1=0x7f08000a;
         public static final int unameField=0x7f080009;

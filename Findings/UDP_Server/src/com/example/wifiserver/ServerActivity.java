@@ -20,31 +20,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ServerActivity extends Activity {
-	// inner handler extension
-	private static class ServerHandler extends Handler {
-		private final WeakReference<ServerActivity> mActivity;
-
-		public ServerHandler(ServerActivity activity) {
-			mActivity = new WeakReference<ServerActivity>(activity);
-		}
-
-		@Override
-		    public void handleMessage(Message msg) {
-		      ServerActivity activity = mActivity.get();
-		      if (activity != null) {
-		    	  //activity.getStatus().setText(msg.getData().getString("msg"));
-		      }
-		    }
-	}
 	
+	Handler handle = new Handler() {	
+		public void handleMessage(Message msg) {
+			Bundle b = msg.getData();
+			String message = b.getString("msg");
+			TextView v = (TextView) findViewById (R.id.server_status_field);
+			v.setText(message);
+		}
+	};
 	
 	TextView ipView;
 	private boolean showIpButtonStatus = false;
 	private int port;
 	TextView status;
-	private final ServerHandler mHandler = new ServerHandler(this);
 	ServerThread server;
-
 	
 	class PrintRunnable implements Runnable {
 		
@@ -55,12 +45,13 @@ public class ServerActivity extends Activity {
 		}
 		
 		public void run() {
-			TextView v = (TextView) findViewById (R.id.status);
+			TextView v = (TextView) findViewById (R.id.server_status_field);
 			v.setText(text);
 		}
 		
 	};
 	
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_srv);
@@ -70,7 +61,8 @@ public class ServerActivity extends Activity {
 		System.out.println("new server");
 		
 		int port = 5555;
-		server = new ServerThread(getIpAddr(), port, mHandler, new PrintRunnable());
+	
+		server = new ServerThread(getIpAddr(), port, handle, new PrintRunnable());
 		server.setActivity(this);
 		pool.execute(server);
 		System.out.println("on create");
@@ -103,7 +95,7 @@ public class ServerActivity extends Activity {
 	}
 
 	public void showIp(View v) {
-		if (!this.showIpButtonStatus) {
+	/*	if (!this.showIpButtonStatus) {
 			String host = this.getIpAddr();
 			ipView.setVisibility(View.VISIBLE);
 			ipView.setText("IP " + host);
@@ -111,7 +103,7 @@ public class ServerActivity extends Activity {
 		} else {
 			ipView.setVisibility(View.INVISIBLE);
 			this.showIpButtonStatus = false;
-		}
+		}*/
 	}
 
 	public String getIpAddr() {
@@ -127,7 +119,7 @@ public class ServerActivity extends Activity {
 
 	public void onPause() {
 		super.onPause();
-		mHandler.removeCallbacksAndMessages(null);
+//		mHandler.removeCallbacksAndMessages(null);
 	}
 
 	public void onResume() {
@@ -140,27 +132,25 @@ public class ServerActivity extends Activity {
 
 	public void onStop() {
 		super.onStop();
-		mHandler.removeCallbacks(null);
+	//	mHandler.removeCallbacks(null);
 	}
 
 	public void onDestroy() {
 		super.onDestroy();
-		mHandler.removeCallbacks(null);
+		//mHandler.removeCallbacks(null);
 	}
 
 	public void goBack(View v) {
 		Intent intent = new Intent(this, MainActivity.class);
 		startActivity(intent);
-		mHandler.removeCallbacks(null);
-		//server.getSocket().close();
-		pool.remove(server);
-		pool.shutdownNow();
+//		pool.remove(server);
+	//	pool.shutdownNow();
 		finish();
 	}
-
+/*
 	public void updateTextField(String str) {
 		System.out.println("updateTextField");
-		TextView status = (TextView) findViewById(R.id.status);
+		TextView status = (TextView) findViewById(R.id.server_status_field);
 		System.out.println("updater this hash: " + this.hashCode());
 		status.setText(str);
 		// System.out.println("updater hash " + status.hashCode());

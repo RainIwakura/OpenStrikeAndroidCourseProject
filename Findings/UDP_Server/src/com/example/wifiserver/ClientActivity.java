@@ -40,6 +40,7 @@ public class ClientActivity extends Activity {
 	TextView msgName;
 	Button sndMsg;
 	ClientThread cThread;
+	DatagramSocket socket;
 
 	private final ThreadPoolExecutor pool = new ThreadPoolExecutor(1, 1, 1,
 			TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
@@ -56,7 +57,7 @@ public class ClientActivity extends Activity {
 		sndMsg = (Button) findViewById(R.id.sendMsg);
 		sndMsg.setVisibility(View.INVISIBLE);
 		
-		cThread = new ClientThread(null, this.handle, getIpAddr());
+		cThread = new ClientThread(socket,null, this.handle, getIpAddr());
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,20 +94,13 @@ public class ClientActivity extends Activity {
 		this.msg.setVisibility(View.VISIBLE);
 		this.msgName.setVisibility(View.VISIBLE);
 		this.sndMsg.setVisibility(View.VISIBLE);
-		//cThread.write(getIpAddr().getBytes());
 	}
 
 	public void writeToServer(View v) {
 		String msg = this.msg.getText().toString();
-		Bundle bundle = new Bundle();
-		Message info = new Message();
-		bundle.putString("msgThread", msg);
-		info.setData(bundle);
-		handle.sendMessage(info);
-		/*synchronized (handle) {
-			handle.notify();
-		}*/
-		new SendMessageTask().execute(msg, this.serverIP);
+
+		SendMessageTask task = new SendMessageTask(socket);
+		task.execute(msg, this.serverIP);
 	}
 
 	public String getIpAddr() {
@@ -121,23 +115,29 @@ public class ClientActivity extends Activity {
 	}
 	
 	
-	class SendMessageTask extends AsyncTask <String, Void, String>{
+	class SendMessageTask extends AsyncTask <String, Void, String> {
 		
 		String message = null;
-		public void setMessage (String msg) {
-			this.message = msg;
+		DatagramSocket socket;
+		
+		public SendMessageTask(DatagramSocket s) {
+			socket = s;
 		}
 		
 		@SuppressWarnings("resource")
 		@Override
 		protected String doInBackground(String... params) {
-			DatagramSocket socket = null;
+			
+			if (!socket.isBound()) {
+				System.out.println("socket in task is null");
+			} 
 			try {
-				socket = new DatagramSocket();
+				socket = new DatagramSocket (5565);
 			} catch (SocketException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
 			try {
 				socket.send(new DatagramPacket(params[0].getBytes(),params[0].getBytes().length,
 						InetAddress.getByName(params[1]), 5555));
@@ -145,6 +145,7 @@ public class ClientActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			return "message sent";
 		}
 		
