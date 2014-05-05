@@ -75,13 +75,14 @@ public class ServerThread extends Thread {
 			
 			String message = "User request is: " + request;
 			
-			this.handle.sendMessage(this.createBundleMsg(message));
-			
+			boolean result = this.handle.sendMessage(this.createBundleMsg(message));
+			System.out.println(result);
+		/*	
 			if ( hashMap.containsKey(request.substring(5, request.length()))) {
 				System.out.println("user exists");
-			}
-			
-			if ( !hashMap.containsKey(request.substring(5, request.length())) && request.substring(0, 3) == "JOIN") {
+			}*/
+			if (request.length() > 10) {
+			if ( !hashMap.containsKey(request.substring(5, request.length())) && request.substring(0, 3) == "JOIN" ) {
 				hashMap.put(request.substring(5, request.length() - 1), packet.getAddress());
 				reply = "Welcome";
 			} else if ( ( hashMap.containsKey(request.substring(5, request.length() - 1)) ) && (request.substring(0, 3) == "JOIN") ) {
@@ -89,9 +90,12 @@ public class ServerThread extends Thread {
 			} else {
 				 reply = request;
 			}
+			}
+			else reply = "crabbe";
 			System.out.println(reply);
 			packet = new DatagramPacket (reply.getBytes(), reply.getBytes().length, packet.getAddress(), packet.getPort());
-			
+			boolean result2 = this.handle.sendMessage(this.createBundleMsg(reply));
+
 			try {
 				serverSocket.send(packet);
 			} catch (IOException e) {

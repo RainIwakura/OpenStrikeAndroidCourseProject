@@ -29,8 +29,6 @@ public class ClientThread extends Thread {
 		this.serverIp = sIp;
 		this.handle = handle;
 		this.clientIp = cIp;
-		
-		
 	}
 
 	public void setIpAddres(String ip) {
@@ -50,15 +48,7 @@ public class ClientThread extends Thread {
 	}
 
 	public void run() {
-		
-		try {
-			socket = new DatagramSocket(null);
-			socket.bind(new InetSocketAddress(InetAddress.getByName(clientIp), port));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+			
 		System.out.println(serverIp);
 
 		byte[] buffer = new byte[1024];

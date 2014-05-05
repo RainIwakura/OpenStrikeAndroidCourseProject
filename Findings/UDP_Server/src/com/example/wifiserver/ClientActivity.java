@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -60,7 +62,15 @@ public class ClientActivity extends Activity {
 		
 		Intent intent = getIntent();
 		this.username = intent.getStringExtra("username");
-
+		
+		
+		try {
+			socket = new DatagramSocket(null);
+			socket.bind(new InetSocketAddress(InetAddress.getByName(getIpAddr()), 5555));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		cThread = new ClientThread(socket, null, this.handle, getIpAddr());
 	}
@@ -103,7 +113,7 @@ public class ClientActivity extends Activity {
 	public void writeToServer(View v) {
 		String msg = this.msg.getText().toString();
 
-		SendMessageTask task = new SendMessageTask(socket);
+		SendMessageTask task = new SendMessageTask();
 		task.execute(msg, this.serverIP);
 	}
 
@@ -121,25 +131,10 @@ public class ClientActivity extends Activity {
 	class SendMessageTask extends AsyncTask<String, Void, String> {
 
 		String message = null;
-		DatagramSocket socket;
-
-		public SendMessageTask(DatagramSocket s) {
-			socket = s;
-		}
 
 		@SuppressWarnings("resource")
 		@Override
 		protected String doInBackground(String... params) {
-
-			if (!socket.isBound()) {
-				System.out.println("socket in task is null");
-			}
-			try {
-				socket = new DatagramSocket(5565);
-			} catch (SocketException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 
 			try {
 				socket.send(new DatagramPacket(params[0].getBytes(), params[0]

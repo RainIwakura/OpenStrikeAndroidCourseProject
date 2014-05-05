@@ -45,12 +45,8 @@ public class ServerActivity extends Activity {
 		Intent intent = getIntent();
 		this.username = intent.getStringExtra("username");
 		ipView = (TextView) findViewById(R.id.showIp);
-		ipView.setVisibility(View.VISIBLE);
 		ipView.setText("IP " + getIpAddr());
-		System.out.println("new server");
-		
-		int port = 5555;
-	
+		int port = 5555;	
 		server = new ServerThread(getIpAddr(), port, handle, new PrintRunnable());
 		pool.execute(server);
 	}
