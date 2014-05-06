@@ -36,20 +36,19 @@ public class MainActivity extends Activity {
 	 * True while launching a tutorial, used to prevent multiple launches of the
 	 * tutorial
 	 */
+	
+	
 	boolean mLaunchingTutorial;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		new GameData();
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.welcome_screen);
-
 		// Enable metaio SDK log messages based on build configuration
 		MetaioDebug.enableLogging(BuildConfig.DEBUG);
-
 		mProgress = findViewById(R.id.progress);
 		// mWebView = (WebView) findViewById(R.id.webview);
-
 		// extract all the assets
 		mTask = new AssetsExtracter();
 		mTask.execute(0);
@@ -106,6 +105,14 @@ public class MainActivity extends Activity {
 	public void startGame(View v) {
 
 		Intent i = new Intent(this, TutorialTrackingSamples.class);
+		startActivity(i);
+		this.finish();
+
+	}
+	
+	public void startServer(View v) {
+
+		Intent i = new Intent(this, ClientServer.class);
 		startActivity(i);
 		this.finish();
 

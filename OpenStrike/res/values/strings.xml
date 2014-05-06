@@ -1,7 +1,14 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
     <string name="app_name">Open Strike</string>
     <string name="metaioSDKSignature">l3+zFdLCBPUCPxu0l4V25kvu4psHqBRP/tjTuJrD78w=</string>
     <string name="btnReset">Reset</string>
     <string name="btnClose">close</string>
     <string name="qr_code_label">Last QR code read:</string>
+    <string name="title_activity_client">ClientActivity</string>
+    <string name="title_activity_server">ServerActivity</string>
+    <string name="server_status_string">status</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
 </resources>

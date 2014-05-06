@@ -26,6 +26,12 @@ public final class R {
         public static final int toastText=0x7f050006;
         public static final int transparent=0x7f050000;
     }
+    public static final class dimen {
+        /**  Default screen margins, per the Android Design guidelines. 
+         */
+        public static final int activity_horizontal_margin=0x7f090000;
+        public static final int activity_vertical_margin=0x7f090001;
+    }
     public static final class drawable {
         public static final int arrow=0x7f020000;
         public static final int background=0x7f020001;
@@ -109,60 +115,79 @@ public final class R {
         public static final int web_stop_pressed=0x7f02004f;
     }
     public static final class id {
-        public static final int RelativeLayout1=0x7f060019;
-        public static final int actionButton=0x7f060007;
+        public static final int RelativeLayout1=0x7f060025;
+        public static final int actionButton=0x7f060018;
+        public static final int action_settings=0x7f060035;
         public static final int audioButton=0x7f060002;
-        public static final int button1=0x7f060014;
-        public static final int buttonBar=0x7f060015;
-        public static final int buttonClose=0x7f060008;
-        public static final int buttonShare=0x7f060024;
-        public static final int buttonWebBack=0x7f060025;
-        public static final int buttonWebForward=0x7f060028;
-        public static final int buttonWebReload=0x7f060027;
-        public static final int buttonWebStop=0x7f060026;
+        public static final int button1=0x7f060033;
+        public static final int buttonClose=0x7f060019;
+        public static final int buttonShare=0x7f06002e;
+        public static final int buttonWebBack=0x7f06002f;
+        public static final int buttonWebForward=0x7f060032;
+        public static final int buttonWebReload=0x7f060031;
+        public static final int buttonWebStop=0x7f060030;
+        public static final int button_client=0x7f060011;
+        public static final int button_server=0x7f060013;
         public static final int callButton=0x7f060005;
+        public static final int container=0x7f060007;
         public static final int emailButton=0x7f060006;
+        public static final int enter_ip=0x7f060008;
+        public static final int getIpField=0x7f060009;
         public static final int homePageButton=0x7f060000;
-        public static final int html5viewcontainer=0x7f060009;
-        public static final int idButton=0x7f060016;
-        public static final int imageAttribution=0x7f060010;
+        public static final int html5viewcontainer=0x7f06001a;
+        public static final int imageAttribution=0x7f060021;
         public static final int imageButton=0x7f060001;
-        public static final int imagePOIThumbnail=0x7f06000c;
-        public static final int layoutRotated=0x7f06000b;
-        public static final int layoutToast=0x7f060012;
-        public static final int left=0x7f06001a;
-        public static final int livesNum=0x7f06001d;
-        public static final int markerlessButton=0x7f060018;
-        public static final int pictureButton=0x7f060017;
-        public static final int poidetailfragment=0x7f06000a;
-        public static final int progress=0x7f060029;
-        public static final int progressBar=0x7f060021;
-        public static final int ratingbar=0x7f06000e;
-        public static final int right=0x7f06001b;
-        public static final int root=0x7f060022;
+        public static final int imagePOIThumbnail=0x7f06001d;
+        public static final int layoutRotated=0x7f06001c;
+        public static final int layoutToast=0x7f060023;
+        public static final int left=0x7f060026;
+        public static final int listTeam1=0x7f060016;
+        public static final int listTeam2=0x7f060017;
+        public static final int livesNum=0x7f060028;
+        public static final int poidetailfragment=0x7f06001b;
+        public static final int progress=0x7f060034;
+        public static final int progressBar=0x7f06002b;
+        public static final int radio0=0x7f06000f;
+        public static final int radio1=0x7f060010;
+        public static final int radioGroup1=0x7f06000e;
+        public static final int ratingbar=0x7f06001f;
+        public static final int right=0x7f060027;
+        public static final int root=0x7f06002c;
         public static final int routeButton=0x7f060004;
-        public static final int textPOIDescription=0x7f060011;
-        public static final int textPOILocation=0x7f06000f;
-        public static final int textPOIName=0x7f06000d;
-        public static final int textToast=0x7f060013;
-        public static final int textView1=0x7f06001c;
-        public static final int textView2=0x7f06001e;
-        public static final int timerValue=0x7f06001f;
+        public static final int sendIpButton=0x7f06000a;
+        public static final int server_status_field=0x7f060015;
+        public static final int showIp=0x7f060014;
+        public static final int status2=0x7f06000b;
+        public static final int textPOIDescription=0x7f060022;
+        public static final int textPOILocation=0x7f060020;
+        public static final int textPOIName=0x7f06001e;
+        public static final int textToast=0x7f060024;
+        public static final int textView1=0x7f06000c;
+        public static final int textView2=0x7f060012;
+        public static final int timerValue=0x7f060029;
+        public static final int username_field=0x7f06000d;
         public static final int videoButton=0x7f060003;
-        public static final int webBottomBar=0x7f060023;
-        public static final int webView=0x7f060020;
+        public static final int webBottomBar=0x7f06002d;
+        public static final int webView=0x7f06002a;
     }
     public static final class layout {
-        public static final int button_action_detail=0x7f030000;
-        public static final int html5container=0x7f030001;
-        public static final int poiactivity=0x7f030002;
-        public static final int poidetaildialog=0x7f030003;
-        public static final int toast=0x7f030004;
-        public static final int tutorial_tracking_samples=0x7f030005;
-        public static final int tutorial_trackingsamples3=0x7f030006;
-        public static final int webview=0x7f030007;
-        public static final int webviewnav=0x7f030008;
-        public static final int welcome_screen=0x7f030009;
+        public static final int activity_cln=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_srv=0x7f030002;
+        public static final int button_action_detail=0x7f030003;
+        public static final int html5container=0x7f030004;
+        public static final int poiactivity=0x7f030005;
+        public static final int poidetaildialog=0x7f030006;
+        public static final int toast=0x7f030007;
+        public static final int tutorial_trackingsamples3=0x7f030008;
+        public static final int webview=0x7f030009;
+        public static final int webviewnav=0x7f03000a;
+        public static final int welcome_screen=0x7f03000b;
+    }
+    public static final class menu {
+        public static final int client=0x7f0a0000;
+        public static final int main=0x7f0a0001;
+        public static final int server=0x7f0a0002;
     }
     public static final class raw {
         public static final int success=0x7f040000;
@@ -969,20 +994,33 @@ public final class R {
         /**  Title for warning messages 
          */
         public static final int MSG_TITLE_WARNING=0x7f0700ab;
+        public static final int action_settings=0x7f070114;
         public static final int app_name=0x7f07010c;
         public static final int btnClose=0x7f07010e;
         public static final int btnReset=0x7f07010d;
+        public static final int hello_world=0x7f070113;
         public static final int metaioSDKSignature=0x7f070000;
         public static final int qr_code_label=0x7f07010f;
+        public static final int server_status_string=0x7f070112;
+        public static final int title_activity_client=0x7f070110;
+        public static final int title_activity_server=0x7f070111;
     }
     public static final class style {
+        /** 
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+
+        
+         */
+        public static final int AppBaseTheme=0x7f080006;
         public static final int AppTheme=0x7f080004;
         public static final int POIButton=0x7f080002;
         public static final int POIButton_POIActionButton=0x7f080003;
-        public static final int Theme_FullScreen=0x7f080006;
+        public static final int Theme_FullScreen=0x7f080007;
         public static final int Theme_Fullscreen=0x7f080000;
         public static final int Theme_NoTitle=0x7f080005;
         public static final int Theme_POIDialog=0x7f080001;
-        public static final int Theme_Translucent=0x7f080007;
+        public static final int Theme_Translucent=0x7f080008;
     }
 }

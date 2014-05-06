@@ -5,6 +5,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
@@ -52,7 +53,9 @@ public class TutorialTrackingSamples extends ARViewActivity {
 	private long startTime = 0L;
 	private Handler customHandler = new Handler();
 	long timeInMilliseconds = 0L;
-	private Player player = new Player();
+	String playerName;
+	String playerTeam;
+	private Player player = new Player("Check");
 	// long timeSwapBuff = 0L;
 	// long updatedTime = 0L;
 
@@ -66,7 +69,9 @@ public class TutorialTrackingSamples extends ARViewActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
+		Intent intent = getIntent();
+		this.playerName = intent.getStringExtra("username");
+		this.playerTeam = intent.getStringExtra("team");
 		super.onCreate(savedInstanceState);
 
 		mCallbackHandler = new MetaioSDKCallbackHandler();
@@ -87,14 +92,17 @@ public class TutorialTrackingSamples extends ARViewActivity {
 
 	}
 
-	public synchronized void checkLife() {
+	public synchronized void checkLife(int value, int id) {
 		if (timeInMilliseconds > 1500L && !block) {
 			block = true;
 			stopTimer();
-			check++;
-			System.out.println(">> " + timeInMilliseconds + " " + check);
-			System.out.println(player.getHealth());
-			player.setHealth(player.getHealth() - 20);
+			for (Player p : GameData.INSTANCE.getPlayerList())
+				if (p.getType().equals(id)) {
+					p.setHealth(p.getHealth() + value);
+					GameData.INSTANCE.getcThread().write(
+							("SHOT " + p.getName()).getBytes());
+				}
+			// player.setHealth(player.getHealth() + value);
 			startTimer();
 			mImagePlane.setVisible(false);
 			mShield.setVisible(true);
@@ -116,21 +124,32 @@ public class TutorialTrackingSamples extends ARViewActivity {
 			if (poses.size() != 0) {
 				// Detect which picture is detected and assign appropriate asset
 				for (int i = 0; i < poses.size(); i++) {
-					if (poses.get(i).isTrackingState()) {
-						if (poses.get(i).getCoordinateSystemID() == 5) {
-							// start timer
-							if (timeInMilliseconds == 0) {
-								startTimer();
+					for (Player p : GameData.INSTANCE.getPlayerList())
+						if (p.getName().equals(playerName))
+							if (!p.isAlive()) {
+								mImagePlane.setVisible(false);
+								mShield.setVisible(false);
+								mSword.setVisible(false);
+								mDead.setCoordinateSystemID(poses.get(i)
+										.getCoordinateSystemID());
 							}
-							mHealth.setCoordinateSystemID(poses.get(i)
-									.getCoordinateSystemID());
-						} else if (poses.get(i).getCoordinateSystemID() == 2) {
+
+					if (poses.get(i).isTrackingState()) {
+						if (poses.get(i).getCoordinateSystemID() == 2) {
 							// start timer
 							if (timeInMilliseconds == 0) {
 								startTimer();
 							}
 							mSword.setCoordinateSystemID(poses.get(i)
 									.getCoordinateSystemID());
+							mSword.setVisible(true);
+							if (timeInMilliseconds > 1000L
+									&& playerTeam.equals("2")) {
+								mImagePlane.setCoordinateSystemID(poses.get(i)
+										.getCoordinateSystemID());
+								checkLife(-20, 2);
+
+							}
 						} else if (poses.get(i).getCoordinateSystemID() == 3) {
 							// start timer
 							if (timeInMilliseconds == 0) {
@@ -139,27 +158,58 @@ public class TutorialTrackingSamples extends ARViewActivity {
 
 							mShield.setCoordinateSystemID(poses.get(i)
 									.getCoordinateSystemID());
-							 mShield.setVisible(true);
-							if (timeInMilliseconds > 1000L) {
+							mShield.setVisible(true);
+							if (timeInMilliseconds > 1000L
+									&& playerTeam.equals("2")) {
 								mImagePlane.setCoordinateSystemID(poses.get(i)
 										.getCoordinateSystemID());
-								checkLife();
-								if (!player.isAlive()) {
-									mImagePlane.setVisible(false);
-									mShield.setVisible(false);
-									mDead.setCoordinateSystemID(poses.get(i)
-											.getCoordinateSystemID());
-								}
+								checkLife(-20, 3);
 							}
-						}
-
-						else if (poses.get(i).getCoordinateSystemID() == 4) {
+						} else if (poses.get(i).getCoordinateSystemID() == 4) {
+							// start timer
 							if (timeInMilliseconds == 0) {
 								startTimer();
 							}
-							mWin.setCoordinateSystemID(poses.get(i)
+							mSword.setCoordinateSystemID(poses.get(i)
+									.getCoordinateSystemID());
+							mSword.setVisible(true);
+							if (timeInMilliseconds > 1000L
+									&& playerTeam.equals("1")) {
+								mImagePlane.setCoordinateSystemID(poses.get(i)
+										.getCoordinateSystemID());
+								checkLife(-20, 4);
+							}
+						} else if (poses.get(i).getCoordinateSystemID() == 5) {
+							// start timer
+							if (timeInMilliseconds == 0) {
+								startTimer();
+							}
+
+							mShield.setCoordinateSystemID(poses.get(i)
+									.getCoordinateSystemID());
+							mShield.setVisible(true);
+							if (timeInMilliseconds > 1000L
+									&& playerTeam.equals("1")) {
+								mImagePlane.setCoordinateSystemID(poses.get(i)
+										.getCoordinateSystemID());
+								checkLife(-20, 5);
+							}
+						} else if (poses.get(i).getCoordinateSystemID() == 6) {
+							// start timer
+							if (timeInMilliseconds == 0) {
+								startTimer();
+							}
+							mHealth.setCoordinateSystemID(poses.get(i)
+									.getCoordinateSystemID());
+						} else if (poses.get(i).getCoordinateSystemID() == 7) {
+							// start timer
+							if (timeInMilliseconds == 0) {
+								startTimer();
+							}
+							mSword.setCoordinateSystemID(poses.get(i)
 									.getCoordinateSystemID());
 						}
+
 					} else {
 						stopTimer();
 					}
@@ -213,6 +263,8 @@ public class TutorialTrackingSamples extends ARViewActivity {
 		right = (ImageView) findViewById(R.id.right);
 		// right = (ImageView) findViewById(R.id.camera_preview_right);
 		timerValue = (TextView) findViewById(R.id.timerValue);
+		startTime = SystemClock.uptimeMillis();
+		cameraHandler.postDelayed(updateCameraViewThread, 0);
 		try {
 
 			// Load desired tracking data for planar marker tracking
@@ -235,7 +287,6 @@ public class TutorialTrackingSamples extends ARViewActivity {
 				}
 			}
 
-			
 			// Lost image
 			final String deadPath = AssetsManager.getAssetPath(
 					getApplicationContext(),
@@ -307,22 +358,12 @@ public class TutorialTrackingSamples extends ARViewActivity {
 		}
 	}
 
-	// public void clickTest() {
-	// //left.setImageBitmap(bitmapLeft);
-	// new Thread(
-	// new Runnable() {
-	// public void run() {
-	// left.setImageBitmap(bitmapLeft);
-	// }
-	// }
-	// ).start();
-	// }
-
 	public void clickTest(View v) {
 		// left.setImageBitmap(bitmapLeft);
 		startTime = SystemClock.uptimeMillis();
-		cameraHandler.postDelayed(updateCameraViewThread, 0);// Causes the
-																// Runnable r
+		cameraHandler.postDelayed(updateCameraViewThread, 0);
+		// Causes the
+		// Runnable r
 		// to be added to the
 		// message queue, to be
 		// run after the
@@ -350,14 +391,10 @@ public class TutorialTrackingSamples extends ARViewActivity {
 					+ String.format("%02d", seconds) + ":"
 					+ String.format("%03d", milliseconds));
 			customHandler.postDelayed(this, 50);
-
 		}
-
 	};
 
-	//
-
-	// camer thread
+	// camera thread
 	private Runnable updateCameraViewThread = new Runnable() {
 
 		public void run() {
@@ -381,30 +418,6 @@ public class TutorialTrackingSamples extends ARViewActivity {
 		return mCallbackHandler;
 	}
 
-	private static File getOutputMediaFile(int type) {
-		File mediaStorageDir = new File(
-				Environment
-						.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-				"MyCameraApp");
-		if (!mediaStorageDir.exists()) {
-			if (!mediaStorageDir.mkdirs()) {
-				Log.d("MyCameraApp", "failed to create directory");
-				return null;
-			}
-		}
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-				.format(new Date());
-		File mediaFile;
-		if (type == MEDIA_TYPE_IMAGE) {
-			mediaFile = new File(mediaStorageDir.getPath() + File.separator
-					+ "IMG_" + timeStamp + ".png");
-		} else {
-			return null;
-		}
-
-		return mediaFile;
-	}
-
 	final class MetaioSDKCallbackHandler extends IMetaioSDKCallback {
 
 		@Override
@@ -419,22 +432,6 @@ public class TutorialTrackingSamples extends ARViewActivity {
 		}
 
 		public void onScreenshotImage(ImageStruct cameraFrame) {
-			// saving image
-			// File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
-			// if (cameraFrame == null) {
-			// Log.i(TAG, "no data");
-			// } else {
-			// try {
-			// FileOutputStream fos = new FileOutputStream(pictureFile);
-			// Bitmap bmp = cameraFrame.getBitmap();
-			// bmp.compress(Bitmap.CompressFormat.PNG, 90, fos);
-			// } catch (FileNotFoundException e) {
-			// Log.d(TAG, "File not found: " + e.getMessage());
-			// } catch (IOException e) {
-			// Log.d(TAG, "Error accessing file: " + e.getMessage());
-			// }
-			// Log.i(TAG, "taken");
-			// }
 
 			bitmapFromCamera = cameraFrame.getBitmap();
 			metaioSDK.requestScreenshot();
