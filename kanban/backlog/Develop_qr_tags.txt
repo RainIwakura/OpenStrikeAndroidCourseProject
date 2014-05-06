@@ -1,0 +1,4 @@
+Task: Develop qr tags, and their functionality
+Author: Team
+Owner: Kamila
+Time: Till Sunday, 16 March

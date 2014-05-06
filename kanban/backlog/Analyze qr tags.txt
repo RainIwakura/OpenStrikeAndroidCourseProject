@@ -1,0 +1,4 @@
+Task: Analyze available qr tags, and choose one open source qr tag reader
+Author: Team
+Owner: Kamila
+Time: Till Sunday, 16 March

@@ -1,0 +1,4 @@
+Task: Increase fps of camera by using opengl
+Author: Team
+Owner: Zhanbolat
+Deadline: April 15

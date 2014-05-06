@@ -1,0 +1,4 @@
+Task: Explore posibility of using OpenDive SDK, Vuforia AR library and Unity3D
+Author: Team
+Owner: Kamila
+Deadline: 24 March

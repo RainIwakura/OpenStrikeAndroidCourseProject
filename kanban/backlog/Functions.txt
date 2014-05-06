@@ -1,4 +1,0 @@
-Task: Develope code for 3D objects' functions
-Author: Team
-Owner: Yerkanat
-Deadline: April, 10

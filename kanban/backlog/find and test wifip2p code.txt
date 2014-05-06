@@ -1,0 +1,1 @@
+Done: found and successfully tested code for transfering data on 3 devices  (Almas)

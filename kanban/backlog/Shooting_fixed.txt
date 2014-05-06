@@ -1,0 +1,4 @@
+Task: Shooting, decrease lives with time passed
+Author: Kamila and Yerkanat
+Owner: Kamila and Yerkanat
+Time: April 26

@@ -1,0 +1,8 @@
+Task: Develope Assets (markers  and  3D objects)
+	Assets:
+		health		
+		blood	
+
+Author: Team
+Owner: Kamila
+Deadline: April, 12
