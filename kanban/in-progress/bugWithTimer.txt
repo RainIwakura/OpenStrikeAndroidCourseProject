@@ -1,4 +1,0 @@
-Task: Fix restart of the timer on picture detection
-Author: Team
-Owner: Zarina and Kamila
-Deadline: April, 15

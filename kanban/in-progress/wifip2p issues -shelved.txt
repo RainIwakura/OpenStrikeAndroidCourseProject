@@ -1,3 +1,0 @@
-By priority:
-Sending data from group owner to client. (Few solutions found, but no successes yet - app just quits)
-Removing permissions and stuff.

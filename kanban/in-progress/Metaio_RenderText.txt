@@ -1,6 +1,0 @@
-Task: Render Text to screen using Metaio SDK
-	
-Author: Team
-Owner: Zarina
-Deadline: April, 10
-

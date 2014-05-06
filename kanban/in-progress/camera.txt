@@ -1,4 +1,4 @@
-Task: Android version of OpenDive
+Task: Increase fps of camera by using opengl
 Author: Team
-Owner: Yerkanat, Zhanbolat
+Owner: Zhanbolat
 Deadline: April 15
