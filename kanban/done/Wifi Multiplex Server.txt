@@ -1,0 +1,1 @@
+Adapted networks code for android; app supports both client and server capabalities, but suffers from bug: thread wasn't closed fully. Shelved in favor for UDP Server. [Almas]

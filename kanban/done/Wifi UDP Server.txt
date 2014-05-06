@@ -1,0 +1,1 @@
+Created UDP server-client from scratch (client code - modified version from networks class actually). Updated UI from previous MultiplexServer. Added ability to communicate painlessly through AsyncTask. Resolved issues with proper closure of DatagramSocket. Handler now properly communicates with server after restart. Activity can be restarted as many times as possible. [Almas]
