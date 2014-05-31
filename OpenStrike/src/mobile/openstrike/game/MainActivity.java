@@ -20,24 +20,13 @@ import com.metaio.tools.io.AssetsManager;
 @SuppressLint("SetJavaScriptEnabled")
 public class MainActivity extends Activity {
 
-	WebView mWebView;
 
-	/**
-	 * Task that will extract all the assets
-	 */
+//	 Task that will extract all the assets
 	AssetsExtracter mTask;
 
-	/**
-	 * Progress view
-	 */
+//	 Progress view
 	View mProgress;
 
-	/**
-	 * True while launching a tutorial, used to prevent multiple launches of the
-	 * tutorial
-	 */
-	
-	
 	boolean mLaunchingTutorial;
 
 	@Override
@@ -48,8 +37,6 @@ public class MainActivity extends Activity {
 		// Enable metaio SDK log messages based on build configuration
 		MetaioDebug.enableLogging(BuildConfig.DEBUG);
 		mProgress = findViewById(R.id.progress);
-		// mWebView = (WebView) findViewById(R.id.webview);
-		// extract all the assets
 		mTask = new AssetsExtracter();
 		mTask.execute(0);
 	}

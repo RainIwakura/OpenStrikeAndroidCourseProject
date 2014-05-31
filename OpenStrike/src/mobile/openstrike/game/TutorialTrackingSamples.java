@@ -31,7 +31,6 @@ import com.metaio.tools.io.AssetsManager;
 public class TutorialTrackingSamples extends ARViewActivity {
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private static final String TAG = "TutorialTrackingSamples";
-	// private IGeometry mMetaioMan;
 	private IGeometry mImagePlane;
 	private IGeometry mHealth;
 	private IGeometry mDead;
@@ -39,13 +38,11 @@ public class TutorialTrackingSamples extends ARViewActivity {
 	private IGeometry mShield;
 	private IGeometry mSword;
 	private boolean block = false;
-	// timer
 	private int check = 0;
 
 	Bitmap bitmapFromCamera;
 	String trackingConfigFile;
 
-	// timer
 	private Button startButton;
 	// private Button pauseButton;
 	private Button stopButton;
@@ -63,7 +60,6 @@ public class TutorialTrackingSamples extends ARViewActivity {
 	private ImageView left, right;
 
 	boolean isTracking = false;
-	//
 
 	private MetaioSDKCallbackHandler mCallbackHandler;
 
@@ -441,7 +437,6 @@ public class TutorialTrackingSamples extends ARViewActivity {
 
 	@Override
 	protected void startCamera() {
-		// Start the first camera found by default
 		final CameraVector cameras = metaioSDK.getCameraList();
 		if (cameras.size() > 0) {
 			com.metaio.sdk.jni.Camera camera = cameras.get(0);
