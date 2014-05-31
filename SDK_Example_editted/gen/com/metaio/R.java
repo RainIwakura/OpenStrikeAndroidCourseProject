@@ -93,11 +93,11 @@ public final class R {
 		public static final int actionButton = 0x7f060007;
 		public static final int audioButton = 0x7f060002;
 		public static final int buttonClose = 0x7f060008;
-		public static final int buttonShare = 0x7f060022;
-		public static final int buttonWebBack = 0x7f060023;
-		public static final int buttonWebForward = 0x7f060026;
-		public static final int buttonWebReload = 0x7f060025;
-		public static final int buttonWebStop = 0x7f060024;
+		public static final int buttonShare = 0x7f060024;
+		public static final int buttonWebBack = 0x7f060025;
+		public static final int buttonWebForward = 0x7f060028;
+		public static final int buttonWebReload = 0x7f060027;
+		public static final int buttonWebStop = 0x7f060026;
 		public static final int callButton = 0x7f060005;
 		public static final int emailButton = 0x7f060006;
 		public static final int homePageButton = 0x7f060000;
@@ -106,25 +106,28 @@ public final class R {
 		public static final int imageButton = 0x7f060001;
 		public static final int imagePOIThumbnail = 0x7f06000c;
 		public static final int layoutRotated = 0x7f06000b;
+		public static final int layoutToast = 0x7f060012;
 		public static final int poidetailfragment = 0x7f06000a;
-		public static final int progressBar = 0x7f06001f;
+		public static final int progressBar = 0x7f060021;
 		public static final int ratingbar = 0x7f06000e;
-		public static final int root = 0x7f060020;
+		public static final int root = 0x7f060022;
 		public static final int routeButton = 0x7f060004;
 		public static final int textPOIDescription = 0x7f060011;
 		public static final int textPOILocation = 0x7f06000f;
 		public static final int textPOIName = 0x7f06000d;
+		public static final int textToast = 0x7f060013;
 		public static final int videoButton = 0x7f060003;
-		public static final int webBottomBar = 0x7f060021;
-		public static final int webView = 0x7f06001e;
+		public static final int webBottomBar = 0x7f060023;
+		public static final int webView = 0x7f060020;
 	}
 	public static final class layout {
 		public static final int button_action_detail = 0x7f030000;
 		public static final int html5container = 0x7f030001;
 		public static final int poiactivity = 0x7f030002;
 		public static final int poidetaildialog = 0x7f030003;
-		public static final int webview = 0x7f030006;
-		public static final int webviewnav = 0x7f030007;
+		public static final int toast = 0x7f030004;
+		public static final int webview = 0x7f030007;
+		public static final int webviewnav = 0x7f030008;
 	}
 	public static final class raw {
 		public static final int success = 0x7f040000;

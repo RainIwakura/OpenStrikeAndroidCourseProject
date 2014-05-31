@@ -112,7 +112,6 @@ public class TutorialTrackingSamples extends ARViewActivity {
 							}
 							mSword.setCoordinateSystemID(poses.get(i)
 									.getCoordinateSystemID());
-							//mSword.setVisible(true); // ??????
 						} else if (poses.get(i).getCoordinateSystemID() == 3) {
 							// start timer
 							if (timeInMilliseconds == 0) {
